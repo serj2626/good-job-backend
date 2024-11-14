@@ -35,6 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USER_TYPES = (
         ("Company", "Компания"),
         ("Employee", "Работник"),
+        ("Admin", "Администратор"),
     )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -85,6 +86,7 @@ class Profile(models.Model):
         max_length=255, unique=True, blank=True, null=True, verbose_name="Слаг"
     )
     online = models.BooleanField(default=False, verbose_name="онлайн")
+    verified = models.BooleanField(default=False, verbose_name="Проверенный")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
 
