@@ -21,7 +21,9 @@ class CommentAdmin(admin.ModelAdmin):
     )
 
     def get_text(self, obj):
-        return obj.text[:36]
+        return obj.text[:36] + "..."
+
+    get_text.short_description = "Сообщение"
 
 
 @admin.register(Category)
@@ -47,6 +49,8 @@ class ResumeAdmin(admin.ModelAdmin):
         "max_salary",
         "about",
     )
+    filter_horizontal = ("stacks", "experience")
+    save_on_top = True
 
 
 @admin.register(Vacancy)
