@@ -28,7 +28,7 @@ class Subscription(models.Model):
 class Feedback(models.Model):
     """Модель обратной связи."""
 
-    Type_Subject = (
+    TYPE_SUBJECT = (
         ("question", "Вопрос"),
         ("suggestion", "Предложение"),
         ("complaint", "Жалоба"),
@@ -42,7 +42,7 @@ class Feedback(models.Model):
         null=True,
     )
     subject = models.CharField(
-        "Тема", max_length=200, choices=Type_Subject, default="question"
+        "Тема", max_length=200, choices=TYPE_SUBJECT, default="question"
     )
     text = models.TextField("Сообщение", max_length=1000)
     photo = models.ImageField(
