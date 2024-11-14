@@ -30,7 +30,7 @@ class Stack(models.Model):
         verbose_name_plural = "Стеки"
 
     def __str__(self):
-        return f"Стек {self.name}"
+        return f"{self.name}"
 
 
 class Category(models.Model):
@@ -65,15 +65,26 @@ class Category(models.Model):
 class Experience(models.Model):
     """Модель опыта работы."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Профиль")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Работник")
     company = models.CharField("Компания", max_length=300)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория"
     )
+    stacks = models.ManyToManyField(Stack, verbose_name="Стек")
     position = models.CharField("Должность", max_length=200)
-    requirements = models.TextField("Требования", max_length=3000)
+    requirements = models.TextField(
+        "Требования", max_length=3000, blank=True, null=True
+    )
+    about = models.TextField("Описание", max_length=3500, blank=True, null=True)
     start_date = models.DateField("Начало работы")
     end_date = models.DateField("Окончание работы", blank=True, null=True)
+
+    def clean(self):
+        if self.end_date <= self.start_date:
+            raise ValidationError(
+                "Дата окончания работы не может быть раньше даты начала работы"
+            )
+        return super().clean()
 
     class Meta:
         verbose_name = "Опыт работы"
@@ -102,13 +113,7 @@ class Resume(models.Model):
     max_salary = models.SmallIntegerField(
         "Максимальная зарплата", blank=True, null=True
     )
-    experience = models.ForeignKey(
-        Experience,
-        on_delete=models.SET_NULL,
-        verbose_name="Опыт работы",
-        blank=True,
-        null=True,
-    )
+    experience = models.ManyToManyField(Experience, verbose_name="Опыт работы")
     about = models.TextField("О себе", max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
@@ -159,7 +164,7 @@ class Vacancy(models.Model):
     requirements = models.TextField(
         "Требования", max_length=3000, blank=True, null=True
     )
-    about = models.TextField("Описание", max_length=1000, blank=True, null=True)
+    about = models.TextField("Описание", max_length=3500, blank=True, null=True)
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
