@@ -12,9 +12,10 @@ class UserAdmin(admin.ModelAdmin):
         "type",
         "is_active",
         "is_superuser",
-        "is_staff",
+        "is_staff"
     )
-    # list_filter = ('',)
+    list_editable = ("type", )
+    list_filter = ('type',)
     # inlines = [
     #     Inline,
     # ]
@@ -37,7 +38,10 @@ class ProfileAdmin(admin.ModelAdmin):
         "avatar",
         "slug",
         "online",
+        "verified"
     )
+
+    list_editable = ("country", "city",)
 
     def get_name(self, obj):
         return obj.user.name
