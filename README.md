@@ -16,6 +16,12 @@ git clone https://github.com/serj2626/good-job-backend
 cd good-job-backend
 ```
 
+## Создать файл .env и внести в него данные 
+
+```bash
+SECRET_KEY=любой текст без пробелов
+```
+
 ## Команды для запуска 
 
 <details>
