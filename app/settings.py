@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "core",
     "accounts",
     "contacts",
+    "notifications",
     "chats",
     # 3rd party
     "django_extensions",
