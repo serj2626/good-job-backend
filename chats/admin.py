@@ -4,7 +4,9 @@ from .models import ResponseVacancy, Message, Interview
 
 @admin.register(Interview)
 class InterviewAdmin(admin.ModelAdmin):
-    """Admin View for Interview)"""
+    """
+    Админка интервью
+    """
 
     list_display = (
         "response_vacancy",
@@ -19,6 +21,9 @@ class InterviewAdmin(admin.ModelAdmin):
 
 @admin.register(ResponseVacancy)
 class ResponseVacancyAdmin(admin.ModelAdmin):
+    """
+    Админка откликов на вакансию
+    """
 
     list_display = (
         "vacancy",
@@ -31,7 +36,9 @@ class ResponseVacancyAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    """Admin View for Message)"""
+    """
+    Админка сообщений
+    """
 
     list_display = (
         "response_vacancy",

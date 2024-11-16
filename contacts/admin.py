@@ -4,7 +4,9 @@ from .models import Feedback, Subscription
 
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
-    """Admin View for Feedback"""
+    """
+    Админка обратной связи
+    """
 
     list_display = (
         "user",
@@ -17,7 +19,9 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    """Admin View for Subscription"""
+    """
+    Админка подписок
+    """
 
     list_display = (
         "email",

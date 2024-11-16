@@ -4,7 +4,9 @@ from .models import User, Profile
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    """Admin View for User"""
+    """
+    Админка пользователей
+    """
 
     list_display = (
         "email",
@@ -28,7 +30,9 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    """Admin View for Profile"""
+    """
+    Админка профилей
+    """
 
     list_display = (
         "get_name",
