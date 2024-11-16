@@ -10,7 +10,7 @@ class FeedbackView(CreateAPIView):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
 
-    @extend_schema(summary="Отправка обратной связи")
+    @extend_schema(tags=["Обратная связь"], summary="Отправка обратной связи")
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
@@ -19,6 +19,6 @@ class SubscriptionView(CreateAPIView):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
 
-    @extend_schema(summary="Подписка на новости")
+    @extend_schema(tags=["Подписка на новости"], summary="Подписка на новости")
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)

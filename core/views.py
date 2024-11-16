@@ -17,6 +17,7 @@ class ExperienceListView(generics.CreateAPIView):
     queryset = Experience.objects.all()
 
     @extend_schema(
+        tags=["Опыт работы"],
         request=ExperienceSerializer,
         responses=ExperienceSerializer,
         summary="Добавление опыта работы",
@@ -30,32 +31,36 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
 
     @extend_schema(
+        tags=["Комментарии"],
         responses=CommentSerializer,
-        summary="Получение комментария",
+        summary="Получение комментария по id",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Комментарии"],
         request=CommentSerializer,
         responses=CommentSerializer,
-        summary="Обновление комментария",
+        summary="Обновление комментария по id",
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Комментарии"],
         request=CommentSerializer,
         responses=CommentSerializer,
-        summary="Удаление комментария",
+        summary="Удаление комментария по id",
     )
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Комментарии"],
         request=CommentSerializer,
         responses=CommentSerializer,
-        summary="Частичное обновление комментария",
+        summary="Частичное обновление комментария по id",
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
@@ -66,6 +71,7 @@ class CommentListView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
 
     @extend_schema(
+        tags=["Комментарии"],
         request=CommentSerializer,
         responses=CommentSerializer,
         summary="Добавление комментария",
@@ -74,8 +80,9 @@ class CommentListView(generics.ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Комментарии"],
         responses=CommentSerializer,
-        summary="Получение комментариев",
+        summary="Получение всех комментариев",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -86,6 +93,7 @@ class CategoryView(generics.ListAPIView):
     queryset = Category.objects.all()
 
     @extend_schema(
+        tags=["Категории"],
         responses=CategorySerializer,
         summary="Получение категории",
     )
@@ -98,6 +106,7 @@ class ResumeListView(generics.ListCreateAPIView):
     queryset = Resume.objects.all()
 
     @extend_schema(
+        tags=["Резюме"],
         request=ResumeSerializer,
         responses=ResumeSerializer,
         summary="Добавление резюме",
@@ -106,6 +115,7 @@ class ResumeListView(generics.ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Резюме"],
         responses=ResumeSerializer,
         summary="Получение всех резюме",
     )
@@ -118,32 +128,36 @@ class ResumeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Resume.objects.all()
 
     @extend_schema(
+        tags=["Резюме"],
         responses=ResumeSerializer,
-        summary="Получение резюме",
+        summary="Получение резюме по id",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Резюме"],
         request=ResumeSerializer,
         responses=ResumeSerializer,
-        summary="Обновление резюме",
+        summary="Обновление резюме по id",
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Резюме"],
         request=ResumeSerializer,
         responses=ResumeSerializer,
-        summary="Удаление резюме",
+        summary="Удаление резюме по id",
     )
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Резюме"],
         request=ResumeSerializer,
         responses=ResumeSerializer,
-        summary="Частичное обновление резюме",
+        summary="Частичное обновление резюме по id",
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
@@ -154,6 +168,7 @@ class VacancyListView(generics.ListCreateAPIView):
     queryset = Vacancy.objects.all()
 
     @extend_schema(
+        tags=["Вакансии"],
         request=VacancySerializer,
         responses=VacancySerializer,
         summary="Добавление вакансии",
@@ -162,6 +177,7 @@ class VacancyListView(generics.ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Вакансии"],
         responses=VacancySerializer,
         summary="Получение всех вакансий",
     )
@@ -174,32 +190,36 @@ class VacancyDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Vacancy.objects.all()
 
     @extend_schema(
+        tags=["Вакансии"],
         responses=VacancySerializer,
-        summary="Получение вакансии",
+        summary="Получение вакансии по id",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Вакансии"],
         request=VacancySerializer,
         responses=VacancySerializer,
-        summary="Обновление вакансии",
+        summary="Обновление вакансии по id",
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Вакансии"],
         request=VacancySerializer,
         responses=VacancySerializer,
-        summary="Удаление вакансии",
+        summary="Удаление вакансии по id",
     )
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Вакансии"],
         request=VacancySerializer,
         responses=VacancySerializer,
-        summary="Частичное обновление вакансии",
+        summary="Частичное обновление вакансии по id",
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
@@ -210,6 +230,7 @@ class StackListView(generics.ListAPIView):
     queryset = Stack.objects.all()
 
     @extend_schema(
+        tags=["Стеки"],
         responses=StackSerializer,
         summary="Получение всех стеков",
     )

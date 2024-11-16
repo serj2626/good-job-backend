@@ -19,32 +19,36 @@ class MessageDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MessageSerializer
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         responses=MessageSerializer,
-        summary="Получение сообщения",
+        summary="Получение сообщения по id",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         request=MessageSerializer,
         responses=MessageSerializer,
-        summary="Обновление сообщения",
+        summary="Обновление сообщения по id",
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         request=MessageSerializer,
         responses=MessageSerializer,
-        summary="Удаление сообщения",
+        summary="Удаление сообщения по id",
     )
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         request=MessageSerializer,
         responses=MessageSerializer,
-        summary="Частичное обновление сообщения",
+        summary="Частичное обновление сообщения по id",
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
@@ -58,6 +62,7 @@ class MessageListView(generics.ListCreateAPIView):
         return super().get_queryset().filter(chat=self.kwargs["chat_id"])
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         request=MessageSerializer,
         responses=MessageSerializer,
         summary="Добавление сообщения",
@@ -66,6 +71,7 @@ class MessageListView(generics.ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         responses=MessageSerializer,
         summary="Получение всех сообщений",
     )
@@ -81,6 +87,7 @@ class ChatListView(generics.ListCreateAPIView):
         return super().get_queryset().filter(user=self.request.user)
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         request=ResponseVacancySerializer,
         responses=ResponseVacancySerializer,
         summary="Добавление чата",
@@ -89,6 +96,7 @@ class ChatListView(generics.ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Отклики и сообщения"],
         responses=ResponseVacancySerializer,
         summary="Получение всех чатов",
     )
@@ -104,6 +112,7 @@ class InterviewListView(generics.ListCreateAPIView):
     serializer_class = InterviewSerializer
 
     @extend_schema(
+        tags=["Интервью"],
         responses=InterviewSerializer,
         summary="Получение всех интервью",
     )
@@ -111,6 +120,7 @@ class InterviewListView(generics.ListCreateAPIView):
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Интервью"],
         request=InterviewSerializer,
         responses=InterviewSerializer,
         summary="Добавление интервью",
@@ -124,32 +134,36 @@ class InterviewDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = InterviewSerializer
 
     @extend_schema(
+        tags=["Интервью"],
         responses=InterviewSerializer,
-        summary="Получение интервью",
+        summary="Получение интервью по id",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Интервью"],
         request=InterviewSerializer,
         responses=InterviewSerializer,
-        summary="Обновление интервью",
+        summary="Обновление интервью по id",
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Интервью"],
         request=InterviewSerializer,
         responses=InterviewSerializer,
-        summary="Удаление интервью",
+        summary="Удаление интервью по id",
     )
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
     @extend_schema(
+        tags=["Интервью"],
         request=InterviewSerializer,
         responses=InterviewSerializer,
-        summary="Частичное обновление интервью",
+        summary="Частичное обновление интервью по id",
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
