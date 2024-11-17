@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from common.const import USER_TYPES
 from .models import Profile, User
 from enum import Enum
 
@@ -24,7 +26,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
     type = serializers.ChoiceField(
-        choices=User.USER_TYPES, default=UserType.Employee.value
+        choices=USER_TYPES, default=UserType.Employee.value
     )
 
     # type = serializers.CharField(source="get_type_display")
