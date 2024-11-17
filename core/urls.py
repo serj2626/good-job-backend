@@ -8,7 +8,11 @@ from .views import (
     ResumeListView,
     VacancyDetailView,
     VacancyListView,
-    StackListView
+    StackListView,
+    FavoriteResumeListView,
+    FavoriteResumeDetailView,
+    FavoriteVacancyListView,
+    FavoriteVacancyDetailView,
 )
 
 
@@ -22,4 +26,24 @@ urlpatterns = [
     path("vacancy-list/", VacancyListView.as_view(), name="vacancy-list"),
     path("vacancy-list/<int:pk>/", VacancyDetailView.as_view(), name="vacancy-detail"),
     path("stack-list/", StackListView.as_view(), name="stack-list"),
+    path(
+        "favorite-resume-list/",
+        FavoriteResumeListView.as_view(),
+        name="favorite-resume-list",
+    ),
+    path(
+        "favorite-resume-list/<int:pk>/",
+        FavoriteResumeDetailView.as_view(),
+        name="favorite-resume-detail",
+    ),
+    path(
+        "favorite-vacancy-list/",
+        FavoriteVacancyListView.as_view(),
+        name="favorite-vacancy-list",
+    ),
+    path(
+        "favorite-vacancy-list/<int:pk>/",
+        FavoriteVacancyDetailView.as_view(),
+        name="favorite-vacancy-detail",
+    ),
 ]
