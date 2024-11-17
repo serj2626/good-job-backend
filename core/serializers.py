@@ -1,4 +1,13 @@
-from .models import Category, Resume, Vacancy, Comment, Experience, Stack
+from .models import (
+    Category,
+    Resume,
+    Vacancy,
+    Comment,
+    Experience,
+    Stack,
+    FavoriteResume,
+    FavoriteVacancy,
+)
 from rest_framework import serializers
 
 
@@ -35,4 +44,16 @@ class CommentSerializer(serializers.ModelSerializer):
 class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
+        fields = "__all__"
+
+
+class FavoriteResumeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavoriteResume
+        fields = "__all__"
+
+
+class FavoriteVacancySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavoriteVacancy
         fields = "__all__"
