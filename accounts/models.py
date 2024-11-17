@@ -82,6 +82,12 @@ class Profile(models.Model):
         max_length=255, unique=True, blank=True, null=True, verbose_name="Слаг"
     )
     online = models.BooleanField(default=False, verbose_name="онлайн")
+    link = models.URLField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на сайт"
+    )
     verified = models.BooleanField(default=False, verbose_name="Проверенный")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")

@@ -39,6 +39,7 @@ class ProfileAdmin(admin.ModelAdmin):
         "user",
         "country",
         "city",
+        "link",
         "avatar",
         "slug",
         "online",
