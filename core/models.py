@@ -4,14 +4,14 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
+from common.const import (
+    CATEGORY_TYPES,
+    LEVELS_REQUIREMENTS,
+    STATUS_VACANCY,
+    WORK_SCHEDULE,
+)
 
 User = get_user_model()
-
-Work_Schedule = (
-    ("full-time", "Полный рабочий день"),
-    ("part-time", "Частичная занятость"),
-    ("remote", "Удаленная работа"),
-)
 
 
 class Stack(models.Model):
@@ -36,16 +36,6 @@ class Stack(models.Model):
 class Category(models.Model):
     """Модель категории."""
 
-    CATEGORY_TYPES = (
-        ("backend", "Бэкенд"),
-        ("frontend", "Фронтенд"),
-        ("fullstack", "Фулстайк"),
-        ("analytics", "Аналитика"),
-        ("devops", "DevOps"),
-        ("design", "Дизайн"),
-        ("other", "Другое"),
-    )
-    """Модель категории."""
     name = models.CharField("Название", max_length=200, choices=CATEGORY_TYPES)
     slug = models.SlugField("Slug", unique=True, blank=True, null=True)
 
@@ -106,7 +96,7 @@ class Resume(models.Model):
     )
     title = models.CharField("Желаемая должность", max_length=200)
     work_schedule = models.CharField(
-        "График работы", max_length=200, choices=Work_Schedule, default="full-time"
+        "График работы", max_length=200, choices=WORK_SCHEDULE, default="full-time"
     )
     stacks = models.ManyToManyField(Stack, verbose_name="Стек")
     min_salary = models.SmallIntegerField("Минимальная зарплата", blank=True, null=True)
@@ -138,11 +128,6 @@ class Resume(models.Model):
 class Vacancy(models.Model):
     """Модель вакансии."""
 
-    STATUS_VACANCY = (
-        ("open", " Открыта"),
-        ("archived", "Архив"),
-    )
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, verbose_name="Категория"
@@ -150,11 +135,14 @@ class Vacancy(models.Model):
     company = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Компания")
     title = models.CharField("Должность", max_length=200)
     work_schedule = models.CharField(
-        "График работы", max_length=200, choices=Work_Schedule, default="full-time"
+        "График работы", max_length=200, choices=WORK_SCHEDULE, default="full-time"
     )
     min_salary = models.SmallIntegerField("Минимальная зарплата", blank=True, null=True)
     max_salary = models.SmallIntegerField(
         "Максимальная зарплата", blank=True, null=True
+    )
+    level = models.CharField(
+        "Уровень", max_length=200, choices=LEVELS_REQUIREMENTS, default="junior"
     )
     status_vacancy = models.CharField(
         "Статус вакансии", max_length=200, choices=STATUS_VACANCY, default="open"

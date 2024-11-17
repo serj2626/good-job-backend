@@ -82,6 +82,7 @@ class VacancyAdmin(admin.ModelAdmin):
         "company",
         "category",
         "title",
+        "level",
         "min_salary",
         "max_salary",
         "work_schedule",
