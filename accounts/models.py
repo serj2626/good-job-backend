@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserM
 from django.db import models
 from django.utils import timezone
 
+from common.const import USER_TYPES
+
 from .service import get_clear_slug, get_path_for_avatar
 
 
@@ -31,12 +33,6 @@ class CustomUserManager(UserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
-    USER_TYPES = (
-        ("Company", "Компания"),
-        ("Employee", "Работник"),
-        ("Admin", "Администратор"),
-    )
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True, verbose_name="Почта")
@@ -66,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ordering = ["name"]
 
     def __str__(self):
-        return f'{self.get_type_display()} ({self.name})'
+        return f"{self.get_type_display()} ({self.name})"
 
 
 class Profile(models.Model):
