@@ -5,25 +5,24 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-from .models import Profile
 
 
 # Статус пользователя
 @receiver(user_logged_in)
 def user_logged_in_callback(sender, request, user, **kwargs):
-    user.profile.online = True
-    user.profile.save()
+    user.online = True
+    user.save()
 
 
 @receiver(user_logged_out)
 def user_logged_out_callback(sender, request, user, **kwargs):
-    user.profile.online = False
-    user.profile.save()
+    user.online = False
+    user.save()
 
 
-# Создание профиля пользователя
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
+# # Создание профиля пользователя
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+#     instance.profile.save()

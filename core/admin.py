@@ -8,7 +8,51 @@ from .models import (
     Stack,
     FavoriteResume,
     FavoriteVacancy,
+    Employee,
+    Company,
 )
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    """
+    Админка компаний
+    """
+
+    list_display = (
+        "user",
+        "name",
+        "site",
+        "phone",
+        "country",
+        "city",
+        "slug",
+    )
+    list_editable = ("name", "site", "phone", "country", "city")
+
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    """
+    Админка работников
+    """
+
+    list_display = (
+        "user",
+        "first_name",
+        "last_name",
+        "middle_name",
+        "date_of_birth",
+        "phone",
+        "country",
+        "city",
+        "slug",
+    )
+    list_editable = (
+        "first_name",
+        "last_name",
+        "middle_name",
+    )
 
 
 @admin.register(Stack)
@@ -62,7 +106,7 @@ class ResumeAdmin(admin.ModelAdmin):
     list_display = (
         "employee",
         "category",
-        "title",
+        "position",
         "work_schedule",
         "min_salary",
         "max_salary",
@@ -81,7 +125,7 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = (
         "company",
         "category",
-        "title",
+        "position",
         "level",
         "min_salary",
         "max_salary",
@@ -99,7 +143,7 @@ class ExperienceAdmin(admin.ModelAdmin):
     """
 
     list_display = (
-        "user",
+        "employee",
         "company",
         "position",
         "requirements",

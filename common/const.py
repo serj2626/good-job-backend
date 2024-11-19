@@ -14,11 +14,26 @@ LEVELS_REQUIREMENTS = (
     ("team_lead", "Team Lead"),
 )
 
+STATUS_RESPONSES = (
+    ("new", "Новый"),
+    ("accepted", "Принят"),
+    ("interview", "Интервью"),
+    ("offered", "Предложение на работу"),
+    ("rejected", "Отклонен"),
+)
+
 STATUS_VACANCY = (
     ("open", " Открыта"),
     ("archived", "Архив"),
 )
 
+STATUS_INTERVIEW = (
+    ("new", "Создан"),
+    ("finished", "Окончен"),
+    ("canceled", "Отменен"),
+    ("accepted", "Успешен"),
+    ("rejected", "Отклонен"),
+)
 
 CATEGORY_TYPES = (
     ("backend", "Бэкенд"),

@@ -1,17 +1,65 @@
 from django.db import models
-from accounts.models import Profile, User
-import uuid
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
+from common.models import ProfileModel, ResumeOrVacancyModel
+from common.service import get_clear_slug
 from common.const import (
     CATEGORY_TYPES,
     LEVELS_REQUIREMENTS,
     STATUS_VACANCY,
-    WORK_SCHEDULE,
 )
 
 User = get_user_model()
+
+
+class Employee(ProfileModel):
+    """Модель работодателя."""
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    first_name = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Имя"
+    )
+    last_name = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Фамилия"
+    )
+    middle_name = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Отчество"
+    )
+    date_of_birth = models.DateField(
+        blank=True, null=True, verbose_name="Дата рождения"
+    )
+
+    class Meta:
+        verbose_name = "Работник"
+        verbose_name_plural = "Работники"
+
+    def __str__(self):
+        return f"Работник {self.first_name} {self.last_name}"
+
+
+class Company(ProfileModel):
+    """Модель компании."""
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    name = models.CharField("Название компании", max_length=500, blank=True, null=True)
+    site = models.URLField("Сайт компании", blank=True, null=True)
+
+    def clean(self):
+        if not self.slug:
+            self.slug = get_clear_slug(self.user.email)
+        super().clean()
+
+    class Meta:
+        verbose_name = "Компания"
+        verbose_name_plural = "Компании"
+
+    def __str__(self):
+        return f"Компания {self.name}"
 
 
 class Stack(models.Model):
@@ -55,7 +103,9 @@ class Category(models.Model):
 class Experience(models.Model):
     """Модель опыта работы."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Работник")
+    employee = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, verbose_name="Работник"
+    )
     company = models.CharField("Компания", max_length=300)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория"
@@ -81,65 +131,32 @@ class Experience(models.Model):
         verbose_name_plural = "Опыт работы"
 
     def __str__(self):
-        return f"Опыт работы в {self.company}"
+        return f"Опыт работы {self.employee} в {self.company}"
 
 
-class Resume(models.Model):
+class Resume(ResumeOrVacancyModel):
     """Модель резюме."""
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     employee = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Работник"
-    )
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, verbose_name="Категория"
-    )
-    title = models.CharField("Желаемая должность", max_length=200)
-    work_schedule = models.CharField(
-        "График работы", max_length=200, choices=WORK_SCHEDULE, default="full-time"
+        Employee, on_delete=models.CASCADE, verbose_name="Работник"
     )
     stacks = models.ManyToManyField(Stack, verbose_name="Стек")
-    min_salary = models.SmallIntegerField("Минимальная зарплата", blank=True, null=True)
-    max_salary = models.SmallIntegerField(
-        "Максимальная зарплата", blank=True, null=True
-    )
     experience = models.ManyToManyField(Experience, verbose_name="Опыт работы")
     about = models.TextField("О себе", max_length=1000, blank=True, null=True)
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
-
-    def clean(self):
-        if not self.max_salary:
-            self.min_salary = None
-        elif self.min_salary and self.max_salary and self.min_salary > self.max_salary:
-            raise ValidationError(
-                "Минимальная зарплата не может быть больше максимальной"
-            )
-        return super().clean()
 
     class Meta:
         verbose_name = "Резюме"
         verbose_name_plural = "Резюме"
 
     def __str__(self):
-        return f"Резюме от {self.employee.email}"
+        return f"Резюме от {self.employee}"
 
 
-class Vacancy(models.Model):
+class Vacancy(ResumeOrVacancyModel):
     """Модель вакансии."""
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, verbose_name="Категория"
-    )
-    company = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Компания")
-    title = models.CharField("Должность", max_length=200)
-    work_schedule = models.CharField(
-        "График работы", max_length=200, choices=WORK_SCHEDULE, default="full-time"
-    )
-    min_salary = models.SmallIntegerField("Минимальная зарплата", blank=True, null=True)
-    max_salary = models.SmallIntegerField(
-        "Максимальная зарплата", blank=True, null=True
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, verbose_name="Компания"
     )
     level = models.CharField(
         "Уровень", max_length=200, choices=LEVELS_REQUIREMENTS, default="junior"
@@ -148,22 +165,10 @@ class Vacancy(models.Model):
         "Статус вакансии", max_length=200, choices=STATUS_VACANCY, default="open"
     )
     work_experience = models.SmallIntegerField("Стаж", blank=True, null=True)
-    stacks = models.ManyToManyField(Stack, verbose_name="Стек")
     requirements = models.TextField(
         "Требования", max_length=3000, blank=True, null=True
     )
     about = models.TextField("Описание", max_length=3500, blank=True, null=True)
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
-
-    def clean(self):
-        if not self.max_salary:
-            self.min_salary = None
-        elif self.min_salary and self.max_salary and self.min_salary > self.max_salary:
-            raise ValidationError(
-                "Минимальная зарплата не может быть больше максимальной"
-            )
-        return super().clean()
 
     class Meta:
         verbose_name = "Вакансия"
@@ -183,7 +188,7 @@ class Comment(models.Model):
         related_name="my_comments",
     )
     company = models.ForeignKey(
-        User,
+        Company,
         on_delete=models.CASCADE,
         verbose_name="Компания",
         related_name="all_comments",
@@ -212,7 +217,7 @@ class FavoriteResume(models.Model):
     resume = models.ForeignKey(
         Resume, on_delete=models.SET_NULL, null=True, verbose_name="Резюме"
     )
-    company = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Компания")
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="Компания")
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
@@ -233,7 +238,7 @@ class FavoriteVacancy(models.Model):
         Vacancy, on_delete=models.SET_NULL, null=True, verbose_name="Вакансия"
     )
     employee = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Работник"
+        Employee, on_delete=models.CASCADE, verbose_name="Работник"
     )
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)

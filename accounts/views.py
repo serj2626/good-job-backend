@@ -5,8 +5,8 @@ from rest_framework.decorators import (
 )
 from rest_framework.response import Response
 
-from .models import User, Profile
-from .serializers import UserRegisterSerializer, ProfileSerializer
+from .models import User
+from .serializers import UserRegisterSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -17,10 +17,6 @@ class RegisterView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
-
-class ProfileView(generics.RetrieveUpdateAPIView):
-    serializer_class = ProfileSerializer
-    queryset = Profile.objects.all()
 
     lookup_field = "slug"
 

@@ -1,7 +1,8 @@
 import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
-from core.models import Vacancy, Resume
+from common.const import STATUS_INTERVIEW, STATUS_RESPONSES
+from core.models import Company, Employee, Vacancy, Resume
 from django.utils.timesince import timesince
 
 
@@ -11,13 +12,6 @@ User = get_user_model()
 class ResponseVacancy(models.Model):
     """Модель отклика на вакансию"""
 
-    STATUS_RESPONSE = (
-        ("new", "Новый"),
-        ("accepted", "Принят"),
-        ("interview", "Интервью"),
-        ("offered", "Предложение на работу"),
-        ("rejected", "Отклонен"),
-    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     vacancy = models.ForeignKey(
         Vacancy,
@@ -35,7 +29,7 @@ class ResponseVacancy(models.Model):
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
     status = models.CharField(
-        "Статус", max_length=200, choices=STATUS_RESPONSE, default="new"
+        "Статус", max_length=200, choices=STATUS_RESPONSES, default="new"
     )
 
     def created_at_formatted(self):
@@ -46,7 +40,7 @@ class ResponseVacancy(models.Model):
         verbose_name_plural = "Отклики"
 
     def __str__(self):
-        return f"Отклик на вакансию от {self.resume.employee.email}"
+        return f"Отклик на вакансию от {self.resume.employee}"
 
 
 class Message(models.Model):
@@ -88,14 +82,6 @@ class Message(models.Model):
 class Interview(models.Model):
     """Модель интервью"""
 
-    STATUS_INTERVIEW = (
-        ("new", "Создан"),
-        ("finished", "Окончен"),
-        ("canceled", "Отменен"),
-        ("accepted", "Успешен"),
-        ("rejected", "Отклонен"),
-    )
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     response_vacancy = models.ForeignKey(
         ResponseVacancy,
@@ -104,13 +90,13 @@ class Interview(models.Model):
         related_name="all_interviews",
     )
     employee = models.ForeignKey(
-        User,
+        Employee,
         on_delete=models.CASCADE,
         verbose_name="Работник",
         related_name="my_interviews",
     )
     company = models.ForeignKey(
-        User,
+        Company,
         on_delete=models.CASCADE,
         verbose_name="Компания",
         related_name="interviews",
@@ -127,4 +113,4 @@ class Interview(models.Model):
         verbose_name_plural = "Интервью"
 
     def __str__(self):
-        return f"Интервью для {self.employee.email}"
+        return f"Интервью для {self.employee}"
