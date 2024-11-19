@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from common.models import ProfileModel, ResumeOrVacancyModel
-from common.service import get_clear_slug
+from common.service import get_clear_slug, get_path_for_avatar
 from common.const import (
     CATEGORY_TYPES,
     LEVELS_REQUIREMENTS,
@@ -139,6 +139,9 @@ class Resume(ResumeOrVacancyModel):
 
     employee = models.ForeignKey(
         Employee, on_delete=models.CASCADE, verbose_name="Работник"
+    )
+    avatar = models.ImageField(
+        "Аватар", upload_to=get_path_for_avatar, blank=True, null=True
     )
     stacks = models.ManyToManyField(Stack, verbose_name="Стек")
     experience = models.ManyToManyField(Experience, verbose_name="Опыт работы")
