@@ -45,6 +45,19 @@ CATEGORY_TYPES = (
     ("other", "Другое"),
 )
 
+TYPE_SUBJECT = (
+        ("question", "Вопрос"),
+        ("suggestion", "Предложение"),
+        ("complaint", "Жалоба"),
+    )
+TYPE_NOTIFICATION = (
+    ("new_vacancy", "Новая вакансия"),
+    ("new_interview", "Новое интервью"),
+    ("new_message", "Новое сообщение"),
+    ("new_response", "Новый отклик"),
+    ("archive_vacancy", "Вакансия перенесена в архив"),
+)
+
 
 USER_TYPES = (
     ("Company", "Компания"),

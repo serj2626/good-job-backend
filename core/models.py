@@ -143,8 +143,7 @@ class Resume(ResumeOrVacancyModel):
     avatar = models.ImageField(
         "Аватар", upload_to=get_path_for_avatar, blank=True, null=True
     )
-    stacks = models.ManyToManyField(Stack, verbose_name="Стек")
-    experience = models.ManyToManyField(Experience, verbose_name="Опыт работы")
+    experience = models.ManyToManyField(Experience, verbose_name="Опыт работы", blank=True)
     about = models.TextField("О себе", max_length=1000, blank=True, null=True)
 
     class Meta:

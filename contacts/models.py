@@ -2,7 +2,8 @@ from re import sub
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from .service import get_path_for_photo_feedback
+from common.const import TYPE_SUBJECT
+from common.service import get_path_for_photo_feedback
 
 
 User = get_user_model()
@@ -23,16 +24,8 @@ class Subscription(models.Model):
         verbose_name_plural = "Подписки"
 
 
-
-
 class Feedback(models.Model):
     """Модель обратной связи."""
-
-    TYPE_SUBJECT = (
-        ("question", "Вопрос"),
-        ("suggestion", "Предложение"),
-        ("complaint", "Жалоба"),
-    )
 
     user = models.ForeignKey(
         User,

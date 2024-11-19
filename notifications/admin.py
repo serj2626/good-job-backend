@@ -9,7 +9,7 @@ class NotificationCompanyAdmin(admin.ModelAdmin):
     """
 
     list_display = (
-        "user",
+        "company",
         "message",
         "created_at",
         "type",
@@ -24,7 +24,7 @@ class NotificationEmployeeAdmin(admin.ModelAdmin):
     """
 
     list_display = (
-        "user",
+        "employee",
         "message",
         "created_at",
         "type",

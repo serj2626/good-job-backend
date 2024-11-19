@@ -50,7 +50,7 @@ class ResumeOrVacancyModel(models.Model):
     work_schedule = models.CharField(
         "График работы", max_length=200, choices=WORK_SCHEDULE, default="full-time"
     )
-    stacks = models.ManyToManyField("Stack", verbose_name="Стек")
+    stacks = models.ManyToManyField("Stack", verbose_name="Стек", blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
 
@@ -58,8 +58,8 @@ class ResumeOrVacancyModel(models.Model):
         abstract = True
 
     def clean(self):
-        if not self.min_salary:
-            self.max_salary = None
+        if not self.min_salary and self.max_salary:
+            raise ValidationError("Необходимо указать минимальную зарплату")
         elif self.min_salary and self.max_salary and self.min_salary > self.max_salary:
             raise ValidationError(
                 "Минимальная зарплата не может быть больше максимальной"
