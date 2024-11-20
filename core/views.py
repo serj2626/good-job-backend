@@ -7,10 +7,14 @@ from .serializers import (
     StackSerializer,
     FavoriteResumeSerializer,
     FavoriteVacancySerializer,
+    CompanySerializer,
+    EmployeeSerializer,
 )
 from drf_spectacular.utils import extend_schema
 
 from .models import (
+    Company,
+    Employee,
     Resume,
     Vacancy,
     Category,
@@ -21,6 +25,130 @@ from .models import (
     FavoriteVacancy,
 )
 from rest_framework import generics
+
+
+class EmployeeListView(generics.ListCreateAPIView):
+    serializer_class = EmployeeSerializer
+    queryset = Employee.objects.all()
+
+    @extend_schema(
+        tags=["Работники"],
+        request=EmployeeSerializer,
+        responses=EmployeeSerializer,
+        summary="Добавление работника",
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Работники"],
+        responses=EmployeeSerializer,
+        summary="Получение всех работников",
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class EmployeeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = EmployeeSerializer
+    queryset = Employee.objects.all()
+
+    @extend_schema(
+        tags=["Работники"],
+        responses=EmployeeSerializer,
+        summary="Получение работника по id",
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Работники"],
+        request=EmployeeSerializer,
+        responses=EmployeeSerializer,
+        summary="Обновление работника по id",
+    )
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Работники"],
+        request=EmployeeSerializer,
+        responses=EmployeeSerializer,
+        summary="Удаление работника по id",
+    )
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Работники"],
+        request=EmployeeSerializer,
+        responses=EmployeeSerializer,
+        summary="Частичное обновление работника по id",
+    )
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
+
+
+
+class CompanyListView(generics.ListCreateAPIView):
+    serializer_class = CompanySerializer
+    queryset = Company.objects.all()
+
+    @extend_schema(
+        tags=["Компании"],
+        request=CompanySerializer,
+        responses=CompanySerializer,
+        summary="Добавление компании",
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Компании"],
+        responses=CompanySerializer,
+        summary="Получение всех компаний",
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class CompanyDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CompanySerializer
+    queryset = Company.objects.all()
+
+    @extend_schema(
+        tags=["Компании"],
+        responses=CompanySerializer,
+        summary="Получение компании по id",
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Компании"],
+        request=CompanySerializer,
+        responses=CompanySerializer,
+        summary="Обновление компании по id",
+    )
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Компании"],
+        responses=CompanySerializer,
+        summary="Удаление компании по id",
+    )
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Компании"],
+        request=CompanySerializer,
+        responses=CompanySerializer,
+        summary="Частичное обновление компании по id",
+    )
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
 
 
 class ExperienceListView(generics.CreateAPIView):
