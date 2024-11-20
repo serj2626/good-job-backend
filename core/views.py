@@ -1,5 +1,7 @@
 from .serializers import (
+    ResumeListCreateSerializer,
     ResumeSerializer,
+    VacancyListCreateSerializer,
     VacancySerializer,
     CategorySerializer,
     CommentSerializer,
@@ -11,7 +13,7 @@ from .serializers import (
     EmployeeSerializer,
 )
 from drf_spectacular.utils import extend_schema
-
+from rest_framework.response import Response
 from .models import (
     Company,
     Employee,
@@ -87,7 +89,6 @@ class EmployeeDetailView(generics.RetrieveUpdateDestroyAPIView):
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
-
 
 
 class CompanyListView(generics.ListCreateAPIView):
@@ -217,6 +218,14 @@ class CommentListView(generics.ListCreateAPIView):
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+    
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        data = request.data
+        serializer = self.get_serializer(
+            data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
 
     @extend_schema(
         tags=["Комментарии"],
@@ -241,13 +250,13 @@ class CategoryView(generics.ListAPIView):
 
 
 class ResumeListView(generics.ListCreateAPIView):
-    serializer_class = ResumeSerializer
+    serializer_class = ResumeListCreateSerializer
     queryset = Resume.objects.all()
 
     @extend_schema(
         tags=["Резюме"],
-        request=ResumeSerializer,
-        responses=ResumeSerializer,
+        request=ResumeListCreateSerializer,
+        responses=ResumeListCreateSerializer,
         summary="Добавление резюме",
     )
     def post(self, request, *args, **kwargs):
@@ -255,13 +264,21 @@ class ResumeListView(generics.ListCreateAPIView):
 
     @extend_schema(
         tags=["Резюме"],
-        responses=ResumeSerializer,
+        responses=ResumeListCreateSerializer,
         summary="Получение всех резюме",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
+    def create(self, request, *args, **kwargs):
+        employee = request.user.employee
+        data = request.data
+        serializer = self.get_serializer(
+            data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(employee=employee)
 
+        return Response(serializer.data, status=201)
 class ResumeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ResumeSerializer
     queryset = Resume.objects.all()
@@ -303,13 +320,13 @@ class ResumeDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class VacancyListView(generics.ListCreateAPIView):
-    serializer_class = VacancySerializer
+    serializer_class = VacancyListCreateSerializer
     queryset = Vacancy.objects.all()
 
     @extend_schema(
         tags=["Вакансии"],
-        request=VacancySerializer,
-        responses=VacancySerializer,
+        request=VacancyListCreateSerializer,
+        responses=VacancyListCreateSerializer,
         summary="Добавление вакансии",
     )
     def post(self, request, *args, **kwargs):
@@ -317,12 +334,21 @@ class VacancyListView(generics.ListCreateAPIView):
 
     @extend_schema(
         tags=["Вакансии"],
-        responses=VacancySerializer,
+        responses=VacancyListCreateSerializer,
         summary="Получение всех вакансий",
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
+    def create(self, request, *args, **kwargs):
+        company = request.user.company
+        data = request.data
+        serializer = self.get_serializer(
+            data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(company=company)
+
+        return Response(serializer.data, status=201)
 
 class VacancyDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = VacancySerializer
@@ -438,7 +464,15 @@ class FavoriteResumeDetailView(generics.RetrieveUpdateDestroyAPIView):
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
 
+    def create(self, request, *args, **kwargs):
+        company = request.user.company
+        data = request.data
+        serializer = self.get_serializer(
+            data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(company=company)
 
+        return Response(serializer.data, status=201)
 class FavoriteVacancyListView(generics.ListCreateAPIView):
     serializer_class = FavoriteVacancySerializer
     queryset = FavoriteVacancy.objects.all()
@@ -459,7 +493,14 @@ class FavoriteVacancyListView(generics.ListCreateAPIView):
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-
+    
+    def create(self, request, *args, **kwargs):
+        employee = request.user.employee
+        data = request.data
+        serializer = self.get_serializer(
+            data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(employee=employee)
 
 class FavoriteVacancyDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FavoriteVacancySerializer

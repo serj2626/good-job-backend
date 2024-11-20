@@ -10,7 +10,28 @@ from .models import (
     FavoriteVacancy,
     Employee,
     Company,
+    Projects,
 )
+
+
+@admin.register(Projects)
+class ProjectsAdmin(admin.ModelAdmin):
+    """
+    Админка проектов
+    """
+
+    list_display = (
+        "employee",
+        "title",
+        "category",
+        "link",
+        "get_description",
+    )
+
+    def get_description(self, obj):
+        return obj.description[:36] + "..."
+
+    get_description.short_description = "Описание"
 
 
 @admin.register(Company)

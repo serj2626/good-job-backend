@@ -16,10 +16,9 @@ class UserDataSerializer(serializers.ModelSerializer):
         fields = ["email", "type"]
 
 
-
 class UserRegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
-    type = serializers.ChoiceField(choices=USER_TYPES, default=UserType.Employee.value)
+    type = serializers.ChoiceField(choices=USER_TYPES, default="Employee")
 
     # type = serializers.CharField(source="get_type_display")
 

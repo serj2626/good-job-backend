@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from common.models import ProfileModel, ResumeOrVacancyModel
-from common.service import get_clear_slug, get_path_for_avatar
+from common.service import get_clear_slug, get_path_for_avatar, get_path_for_image_project
 from common.const import (
     CATEGORY_TYPES,
     LEVELS_REQUIREMENTS,
@@ -11,6 +11,44 @@ from common.const import (
 )
 
 User = get_user_model()
+
+
+class Category(models.Model):
+    """Модель категории."""
+
+    name = models.CharField("Название", max_length=200, choices=CATEGORY_TYPES)
+    slug = models.SlugField("Slug", unique=True, blank=True, null=True)
+
+    def clean(self):
+        if not self.slug:
+            self.slug = self.name.lower().replace(" ", "-")
+        return super().clean()
+
+    class Meta:
+        verbose_name = " Категория"
+        verbose_name_plural = "Категории"
+
+    def __str__(self):
+        return f"Категория {self.name}"
+
+
+class Stack(models.Model):
+    """Модель стека."""
+
+    name = models.CharField("Название", max_length=200)
+    slug = models.SlugField("Slug", unique=True, blank=True, null=True)
+
+    def clean(self):
+        if not self.slug:
+            self.slug = self.name.lower().replace(" ", "-")
+        return super().clean()
+
+    class Meta:
+        verbose_name = " Стек"
+        verbose_name_plural = "Стеки"
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Employee(ProfileModel):
@@ -62,42 +100,31 @@ class Company(ProfileModel):
         return f"Компания {self.name}"
 
 
-class Stack(models.Model):
-    """Модель стека."""
+class Projects(models.Model):
+    """Модель проекта."""
 
-    name = models.CharField("Название", max_length=200)
-    slug = models.SlugField("Slug", unique=True, blank=True, null=True)
-
-    def clean(self):
-        if not self.slug:
-            self.slug = self.name.lower().replace(" ", "-")
-        return super().clean()
-
-    class Meta:
-        verbose_name = " Стек"
-        verbose_name_plural = "Стеки"
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class Category(models.Model):
-    """Модель категории."""
-
-    name = models.CharField("Название", max_length=200, choices=CATEGORY_TYPES)
-    slug = models.SlugField("Slug", unique=True, blank=True, null=True)
-
-    def clean(self):
-        if not self.slug:
-            self.slug = self.name.lower().replace(" ", "-")
-        return super().clean()
+    employee = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, verbose_name="Работник"
+    )
+    title = models.CharField("Название проекта", max_length=300)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория"
+    )
+    image = models.ImageField(
+        "Постер", upload_to=get_path_for_image_project, blank=True, null=True
+    )
+    stacks = models.ManyToManyField(Stack, verbose_name="Стек", blank=True)
+    link = models.URLField("Ссылка на проект", blank=True, null=True)
+    description = models.TextField("Описание", max_length=3000, blank=True, null=True)
+    created_at = models.DateTimeField("Создан", auto_now_add=True)
+    updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
     class Meta:
-        verbose_name = " Категория"
-        verbose_name_plural = "Категории"
+        verbose_name = "Проект"
+        verbose_name_plural = "Проекты"
 
     def __str__(self):
-        return f"Категория {self.name}"
+        return f"Проект {self.title} работника {self.employee}"
 
 
 class Experience(models.Model):
@@ -143,7 +170,9 @@ class Resume(ResumeOrVacancyModel):
     avatar = models.ImageField(
         "Аватар", upload_to=get_path_for_avatar, blank=True, null=True
     )
-    experience = models.ManyToManyField(Experience, verbose_name="Опыт работы", blank=True)
+    experience = models.ManyToManyField(
+        Experience, verbose_name="Опыт работы", blank=True
+    )
     about = models.TextField("О себе", max_length=1000, blank=True, null=True)
 
     class Meta:
@@ -219,7 +248,9 @@ class FavoriteResume(models.Model):
     resume = models.ForeignKey(
         Resume, on_delete=models.SET_NULL, null=True, verbose_name="Резюме"
     )
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name="Компания")
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, verbose_name="Компания"
+    )
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
 

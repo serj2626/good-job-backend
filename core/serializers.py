@@ -42,8 +42,18 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ResumeListCreateSerializer(serializers.ModelSerializer):
+    employee = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    category = serializers.CharField(source="category.name")
+
+    class Meta:
+        model = Resume
+        fields = "__all__"
+
 class ResumeSerializer(serializers.ModelSerializer):
     employee = EmployeeSerializer()
+    # employee = serializers.HiddenField(default=serializers.CurrentUserDefault())
     stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
     category = serializers.CharField(source="category.name")
 
@@ -54,6 +64,16 @@ class ResumeSerializer(serializers.ModelSerializer):
 
 class VacancySerializer(serializers.ModelSerializer):
     company = CompanySerializer()
+    stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    category = serializers.CharField(source="category.name")
+
+    class Meta:
+        model = Vacancy
+        fields = "__all__"
+
+
+class VacancyListCreateSerializer(serializers.ModelSerializer):
+    company = serializers.HiddenField(default=serializers.CurrentUserDefault())
     stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
     category = serializers.CharField(source="category.name")
 
