@@ -174,6 +174,7 @@ class Resume(ResumeOrVacancyModel):
         Experience, verbose_name="Опыт работы", blank=True
     )
     about = models.TextField("О себе", max_length=1000, blank=True, null=True)
+    visibility = models.BooleanField("Видимость", default=True)
 
     class Meta:
         verbose_name = "Резюме"

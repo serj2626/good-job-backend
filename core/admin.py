@@ -131,8 +131,9 @@ class ResumeAdmin(admin.ModelAdmin):
         "work_schedule",
         "min_salary",
         "max_salary",
+        "visibility",
     )
-    list_editable = ("min_salary", "max_salary", "work_schedule")
+    list_editable = ("min_salary", "max_salary", "work_schedule", "visibility")
 
     filter_horizontal = ("stacks", "experience")
     save_on_top = True
