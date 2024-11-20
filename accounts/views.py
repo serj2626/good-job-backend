@@ -9,6 +9,13 @@ from .models import User
 from .serializers import UserRegisterSerializer
 
 
+@extend_schema(summary="Получение информации о пользователе")
+@api_view(["GET"])
+def get_user_info(request):
+    user = request.user
+    return Response({"email": user.email, "type": user.type})
+
+
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
     queryset = User.objects.all()
@@ -17,17 +24,4 @@ class RegisterView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
-
     lookup_field = "slug"
-
-    @extend_schema(summary="Получение профиля")
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    @extend_schema(summary="Обновление профиля")
-    def put(self, request, *args, **kwargs):
-        return super().put(request, *args, **kwargs)
-
-    @extend_schema(summary="Частичное обновление профиля")
-    def patch(self, request, *args, **kwargs):
-        return super().patch(request, *args, **kwargs)
