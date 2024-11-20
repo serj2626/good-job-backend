@@ -76,7 +76,7 @@ class Message(models.Model):
         verbose_name_plural = "Сообщения"
 
     def __str__(self):
-        return f"Сообщение от {self.response_vacancy.resume.employee.email}"
+        return f"Сообщение от {self.response_vacancy.resume.employee.user}"
 
 
 class Interview(models.Model):
