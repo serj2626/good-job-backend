@@ -13,11 +13,21 @@ from .views import (
     FavoriteResumeDetailView,
     FavoriteVacancyListView,
     FavoriteVacancyDetailView,
+    EmployeeDetailView,
+    EmployeeListView,
+    CompanyDetailView,
+    CompanyListView,
 )
 
 
 urlpatterns = [
     path("category/", CategoryView.as_view(), name="category"),
+    path("company-list/", CompanyListView.as_view(), name="company-list"),
+    path("company-list/<int:pk>/", CompanyDetailView.as_view(), name="company-detail"),
+    path("employee-list/", EmployeeListView.as_view(), name="employee-list"),
+    path(
+        "employee-list/<int:pk>/", EmployeeDetailView.as_view(), name="employee-detail"
+    ),
     path("experience/", ExperienceListView.as_view(), name="experience"),
     path("comments/", CommentListView.as_view(), name="comments"),
     path("comments/<int:pk>/", CommentDetailView.as_view(), name="comments-detail"),
