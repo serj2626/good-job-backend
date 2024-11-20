@@ -13,9 +13,14 @@ class InterviewAdmin(admin.ModelAdmin):
         "employee",
         "company",
         "status",
-        "created_at",
         "date_interview",
-        "updated_at",
+    )
+    list_editable = ("status",)
+
+    list_display_links = (
+        "response_vacancy",
+        "employee",
+        "company",
     )
 
 
@@ -28,9 +33,14 @@ class ResponseVacancyAdmin(admin.ModelAdmin):
     list_display = (
         "vacancy",
         "resume",
-        "created_at",
-        "updated_at",
         "status",
+    )
+
+    list_editable = ("status",)
+
+    list_display_links = (
+        "vacancy",
+        "resume",
     )
 
 
@@ -44,7 +54,10 @@ class MessageAdmin(admin.ModelAdmin):
         "response_vacancy",
         "sender",
         "receiver",
-        "text",
-        "created_at",
-        "updated_at",
+        "get_msg",
     )
+
+    def get_msg(self, obj):
+        return str(obj.text)[0:36] + "..."
+
+    get_msg.short_description = "Сообщение"
