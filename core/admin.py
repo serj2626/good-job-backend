@@ -39,8 +39,8 @@ class EmployeeAdmin(admin.ModelAdmin):
 
     list_display = (
         "user",
-        "first_name",
         "last_name",
+        "first_name",
         "middle_name",
         "date_of_birth",
         "phone",
@@ -110,8 +110,9 @@ class ResumeAdmin(admin.ModelAdmin):
         "work_schedule",
         "min_salary",
         "max_salary",
-        "about",
     )
+    list_editable = ("min_salary", "max_salary", "work_schedule")
+
     filter_horizontal = ("stacks", "experience")
     save_on_top = True
 
@@ -131,7 +132,11 @@ class VacancyAdmin(admin.ModelAdmin):
         "max_salary",
         "work_schedule",
         "work_experience",
-        "about",
+        "status_vacancy",
+    )
+
+    list_editable = (
+        "level",
         "status_vacancy",
     )
 
