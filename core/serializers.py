@@ -5,10 +5,29 @@ from .models import (
     Comment,
     Experience,
     Stack,
+    Employee,
+    Company,
     FavoriteResume,
     FavoriteVacancy,
 )
 from rest_framework import serializers
+from accounts.serializers import UserDataSerializer
+
+
+class CompanySerializer(serializers.ModelSerializer):
+    user = UserDataSerializer()
+
+    class Meta:
+        model = Company
+        fields = "__all__"
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    user = UserDataSerializer()
+
+    class Meta:
+        model = Employee
+        fields = "__all__"
 
 
 class StackSerializer(serializers.ModelSerializer):
@@ -24,12 +43,20 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializer(serializers.ModelSerializer):
+    employee = EmployeeSerializer()
+    stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    category = serializers.CharField(source="category.name")
+
     class Meta:
         model = Resume
         fields = "__all__"
 
 
 class VacancySerializer(serializers.ModelSerializer):
+    company = CompanySerializer()
+    stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    category = serializers.CharField(source="category.name")
+
     class Meta:
         model = Vacancy
         fields = "__all__"
