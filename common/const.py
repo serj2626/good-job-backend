@@ -16,7 +16,7 @@ LEVELS_REQUIREMENTS = (
 
 STATUS_RESPONSES = (
     ("new", "Новый"),
-    ("accepted", "Принят"),
+    ("accepted", "Приглашение"),
     ("interview", "Интервью"),
     ("offered", "Предложение на работу"),
     ("rejected", "Отклонен"),
