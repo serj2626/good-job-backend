@@ -46,10 +46,11 @@ CATEGORY_TYPES = (
 )
 
 TYPE_SUBJECT = (
-        ("question", "Вопрос"),
-        ("suggestion", "Предложение"),
-        ("complaint", "Жалоба"),
-    )
+    ("question", "Вопрос"),
+    ("suggestion", "Предложение"),
+    ("complaint", "Жалоба"),
+)
+
 TYPE_NOTIFICATION = (
     ("new_vacancy", "Новая вакансия"),
     ("new_interview", "Новое интервью"),
@@ -63,4 +64,15 @@ USER_TYPES = (
     ("Company", "Компания"),
     ("Employee", "Работник"),
     ("Admin", "Администратор"),
+)
+
+
+TYPE_SOCIAL_LINK = (
+    ("vk", "Вконтакте"),
+    ("linkedin", "LinkedIn"),
+    ("tg", "Telegram"),
+    ("github", "GitHub"),
+    ("gitlab", "GitLab"),
+    ("habr", "Habr"),
+    ("other", "Другое"),
 )

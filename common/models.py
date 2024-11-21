@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.core.exceptions import ValidationError
+from core.models import Category, Stack
 from common.const import WORK_SCHEDULE
 from common.service import get_clear_slug
 
@@ -10,7 +11,6 @@ class ProfileModel(models.Model):
     Абстрактная модель для профилей Компании и Работодателя.
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     phone = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Телефон"
     )
@@ -41,7 +41,7 @@ class ResumeOrVacancyModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     position = models.CharField("Должность", max_length=200)
     category = models.ForeignKey(
-        "Category", on_delete=models.CASCADE, verbose_name="Категория"
+        Category, on_delete=models.CASCADE, verbose_name="Категория"
     )
     min_salary = models.SmallIntegerField("Минимальная зарплата", blank=True, null=True)
     max_salary = models.SmallIntegerField(
@@ -50,7 +50,7 @@ class ResumeOrVacancyModel(models.Model):
     work_schedule = models.CharField(
         "График работы", max_length=200, choices=WORK_SCHEDULE, default="full-time"
     )
-    stacks = models.ManyToManyField("Stack", verbose_name="Стек", blank=True)
+    stacks = models.ManyToManyField(Stack, verbose_name="Стек", blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
 

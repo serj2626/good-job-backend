@@ -1,5 +1,6 @@
 from django.db import models
-from core.models import Company, Employee
+from companies.models import Company
+from employees.models import Employee
 from common.const import TYPE_NOTIFICATION
 
 

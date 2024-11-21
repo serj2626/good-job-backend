@@ -1,8 +1,10 @@
 import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
+from employees.models import Employee, Resume
+from companies.models import Company, Vacancy
 from common.const import STATUS_INTERVIEW, STATUS_RESPONSES
-from core.models import Company, Employee, Vacancy, Resume
+
 from django.utils.timesince import timesince
 
 
