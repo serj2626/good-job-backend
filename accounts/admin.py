@@ -12,7 +12,7 @@ class UserAdmin(admin.ModelAdmin):
         "email",
         "type",
         "online",
-        "verified",
+        "is_verified",
         "is_active",
         "is_superuser",
         "is_staff"
