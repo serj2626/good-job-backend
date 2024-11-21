@@ -38,7 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=255, choices=USER_TYPES, default="Employee", verbose_name="Тип"
     )
     online = models.BooleanField(default=False, verbose_name="онлайн")
-    verified = models.BooleanField(default=False, verbose_name="подтвержден")
+    is_verified = models.BooleanField(default=False, verbose_name="подтвержден")
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
