@@ -60,11 +60,7 @@ TYPE_NOTIFICATION = (
 )
 
 
-USER_TYPES = (
-    ("Company", "Компания"),
-    ("Employee", "Работник"),
-    ("Admin", "Администратор"),
-)
+USER_TYPES = (("Company", "Компания"), ("Employee", "Работник"))
 
 
 TYPE_SOCIAL_LINK = (
@@ -75,4 +71,9 @@ TYPE_SOCIAL_LINK = (
     ("gitlab", "GitLab"),
     ("habr", "Habr"),
     ("other", "Другое"),
+)
+
+STATUS_EMPLOYEE = (
+    ("unemployed", "Не ищу работу"),
+    ("search", "В поиске работы"),
 )
