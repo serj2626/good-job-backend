@@ -20,6 +20,9 @@ class ProfileModel(models.Model):
     city = models.CharField(
         max_length=255, blank=True, null=True, default="Москва", verbose_name="Город"
     )
+    about = models.TextField(
+        max_length=5000, blank=True, null=True, verbose_name="Описание"
+    )
     slug = models.SlugField("Слаг", unique=True, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
