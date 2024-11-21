@@ -22,9 +22,9 @@ def user_logged_out_callback(sender, request, user, **kwargs):
     user.save()
 
 
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, created, **kwargs):
-#     if instance.type == "Company" and created:
-#         Company.objects.create(user=instance)
-#     else:
-#         Employee.objects.create(user=instance)
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, created, **kwargs):
+    if instance.type == "Company" and created:
+        Company.objects.create(user=instance)
+    else:
+        Employee.objects.create(user=instance)
