@@ -17,8 +17,13 @@ class CompanyAdmin(admin.ModelAdmin):
         "country",
         "city",
         "slug",
+        "is_verified",
     )
-    list_editable = ("name", "site", "phone", "country", "city")
+
+    def is_verified(self, obj):
+        return obj.user.is_verified
+
+    is_verified.short_description = "Проверена"
 
 
 @admin.register(Vacancy)
