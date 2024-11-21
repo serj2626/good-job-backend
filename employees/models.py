@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from common.const import TYPE_SOCIAL_LINK
 from core.models import Category, Stack
 from common.models import ProfileModel, ResumeOrVacancyModel
 from common.service import (
     get_path_for_avatar,
+    get_path_for_avatar_employee,
     get_path_for_image_project,
 )
 
@@ -17,6 +19,11 @@ class Employee(ProfileModel):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
+    position = models.CharField("Должность", max_length=300, blank=True, null=True)
+    avatar = models.ImageField(
+        "Аватар", upload_to=get_path_for_avatar_employee, blank=True, null=True
+    )
+    stacks = models.ManyToManyField(Stack, verbose_name="Стек", blank=True)
     first_name = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Имя"
     )
@@ -36,6 +43,23 @@ class Employee(ProfileModel):
 
     def __str__(self):
         return f"Работник {self.first_name} {self.last_name}"
+
+
+class SocialLinkEmployee(models.Model):
+    """Модель социальной сети работника."""
+
+    employee = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, verbose_name="Работник"
+    )
+    name = models.CharField("Название", max_length=300, choices=TYPE_SOCIAL_LINK)
+    link = models.URLField("Ссылка", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Социальная сеть"
+        verbose_name_plural = "Социальные сети"
+
+    def __str__(self):
+        return f"Социальная сеть {self.name}"
 
 
 class Project(models.Model):
@@ -108,9 +132,6 @@ class Resume(ResumeOrVacancyModel):
     )
     avatar = models.ImageField(
         "Аватар", upload_to=get_path_for_avatar, blank=True, null=True
-    )
-    experience = models.ManyToManyField(
-        Experience, verbose_name="Опыт работы", blank=True
     )
     about = models.TextField("О себе", max_length=1000, blank=True, null=True)
     visibility = models.BooleanField("Видимость", default=True)
