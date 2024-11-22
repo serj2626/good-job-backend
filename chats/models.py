@@ -116,3 +116,29 @@ class Interview(models.Model):
 
     def __str__(self):
         return f"Интервью для {self.employee}"
+
+
+class Subscription(models.Model):
+    """Модель подписки"""
+
+    sender = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Отправитель",
+        related_name="my_subscriptions",
+    )
+    receiver = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Получатель",
+        related_name="subscriptions",
+    )
+    created_at = models.DateTimeField("Создан", auto_now_add=True)
+    updated_at = models.DateTimeField("Обновлен", auto_now=True)
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+
+    def __str__(self):
+        return f"Подписка от {self.sender}"

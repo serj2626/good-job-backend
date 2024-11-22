@@ -1,5 +1,19 @@
 from django.contrib import admin
-from .models import ResponseVacancy, Message, Interview
+from .models import ResponseVacancy, Message, Interview, Subscription
+
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    """
+    Админка подписок
+    """
+
+    list_display = (
+        "sender",
+        "receiver",
+        "created_at",
+        "updated_at",
+    )
 
 
 @admin.register(Interview)
