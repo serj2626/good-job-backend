@@ -5,7 +5,7 @@ WORK_SCHEDULE = (
 )
 
 LEVELS_REQUIREMENTS = (
-    ("intern", "Intern"),
+    ("intern", "Стажер"),
     ("junior", "Junior"),
     ("junior_plus", "Junior+"),
     ("middle", "Middle"),
@@ -24,7 +24,7 @@ STATUS_RESPONSES = (
 
 STATUS_VACANCY = (
     ("open", " Открыта"),
-    ("archived", "Архив"),
+    ("archived", "В архиве"),
 )
 
 STATUS_INTERVIEW = (
@@ -45,7 +45,7 @@ CATEGORY_TYPES = (
     ("other", "Другое"),
 )
 
-TYPE_SUBJECT = (
+TYPE_FEEDBACK = (
     ("question", "Вопрос"),
     ("suggestion", "Предложение"),
     ("complaint", "Жалоба"),
@@ -57,6 +57,8 @@ TYPE_NOTIFICATION = (
     ("new_message", "Новое сообщение"),
     ("new_response", "Новый отклик"),
     ("archive_vacancy", "Вакансия перенесена в архив"),
+    ("new_user", "На вас подписался новый пользователь"),
+    ("new_visitor", "Вашу страницу посетил новый пользователь"),
 )
 
 
