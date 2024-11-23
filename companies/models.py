@@ -23,6 +23,7 @@ class Company(ProfileModel):
     avatar = models.ImageField(
         "Аватар", upload_to=get_path_for_avatar_company, blank=True, null=True
     )
+    count_employees = models.SmallIntegerField("Количество  сотрудников", default=0)
     name = models.CharField("Название компании", max_length=500, blank=True, null=True)
     site = models.URLField("Сайт компании", blank=True, null=True)
 
@@ -78,8 +79,7 @@ class Comment(models.Model):
     likes = models.ManyToManyField(User, verbose_name="Лайки", blank=True)
     text = models.TextField("Сообщение", max_length=3000)
     stars = models.SmallIntegerField(
-        "Оценка",
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        "Оценка", validators=[MinValueValidator(1), MaxValueValidator(5)], default=5
     )
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
