@@ -1,8 +1,7 @@
-from re import sub
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from common.const import TYPE_SUBJECT
+from common.const import TYPE_FEEDBACK
 from common.service import get_path_for_photo_feedback
 
 
@@ -35,7 +34,7 @@ class Feedback(models.Model):
         null=True,
     )
     subject = models.CharField(
-        "Тема", max_length=200, choices=TYPE_SUBJECT, default="question"
+        "Тема", max_length=200, choices=TYPE_FEEDBACK, default="question"
     )
     text = models.TextField("Сообщение", max_length=1000)
     photo = models.ImageField(
@@ -44,7 +43,7 @@ class Feedback(models.Model):
     created_at = models.DateTimeField("Создан", auto_now_add=True)
 
     def __str__(self):
-        return f"Обратная связь от {self.user.name}"
+        return f"Обратная связь от {self.user.email}"
 
     class Meta:
 
