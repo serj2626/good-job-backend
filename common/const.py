@@ -79,3 +79,9 @@ STATUS_EMPLOYEE = (
     ("unemployed", "Не ищу работу"),
     ("search", "В поиске работы"),
 )
+
+STATUS_FRIEND_REQUEST = (
+    ("pending", "Отправлена"),
+    ("accepted", "Принята"),
+    ("rejected", "Отклонена"),
+)
