@@ -1,19 +1,5 @@
 from django.contrib import admin
-from .models import ResponseVacancy, Message, Interview, Subscription
-
-
-@admin.register(Subscription)
-class SubscriptionAdmin(admin.ModelAdmin):
-    """
-    Админка подписок
-    """
-
-    list_display = (
-        "sender",
-        "receiver",
-        "created_at",
-        "updated_at",
-    )
+from .models import ResponseVacancy, MessageToResponse, Interview
 
 
 @admin.register(Interview)
@@ -58,8 +44,8 @@ class ResponseVacancyAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Message)
-class MessageAdmin(admin.ModelAdmin):
+@admin.register(MessageToResponse)
+class MessageToResponseAdmin(admin.ModelAdmin):
     """
     Админка сообщений
     """
