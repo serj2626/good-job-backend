@@ -45,7 +45,7 @@ class ResponseVacancy(models.Model):
         return f"Отклик на вакансию от {self.resume.employee}"
 
 
-class Message(models.Model):
+class MessageToResponse(models.Model):
     """Модель сообщения в отклике на вакансию"""
 
     response_vacancy = models.ForeignKey(
@@ -74,8 +74,8 @@ class Message(models.Model):
         return timesince(self.created_at)
 
     class Meta:
-        verbose_name = "Сообщение"
-        verbose_name_plural = "Сообщения"
+        verbose_name = "Сообщение отклика"
+        verbose_name_plural = "Сообщения отклика"
 
     def __str__(self):
         return f"Сообщение от {self.response_vacancy.resume.employee.user}"
@@ -116,29 +116,3 @@ class Interview(models.Model):
 
     def __str__(self):
         return f"Интервью для {self.employee}"
-
-
-class Subscription(models.Model):
-    """Модель подписки"""
-
-    sender = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name="Отправитель",
-        related_name="my_subscriptions",
-    )
-    receiver = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name="Получатель",
-        related_name="subscriptions",
-    )
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
-
-    class Meta:
-        verbose_name = "Подписка"
-        verbose_name_plural = "Подписки"
-
-    def __str__(self):
-        return f"Подписка от {self.sender}"
