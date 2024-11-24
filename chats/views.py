@@ -1,9 +1,9 @@
 from .serializers import (
     ResponseVacancySerializer,
-    MessageSerializer,
+    MessageToResponseSerializer,
     InterviewSerializer,
 )
-from .models import ResponseVacancy, Message
+from .models import ResponseVacancy, MessageToResponse
 
 # from rest_framework import viewsets, permissions
 # from rest_framework.response import Response
@@ -15,12 +15,12 @@ from drf_spectacular.utils import extend_schema
 
 
 class MessageDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
+    queryset = MessageToResponse.objects.all()
+    serializer_class = MessageToResponseSerializer
 
     @extend_schema(
         tags=["Отклики и сообщения"],
-        responses=MessageSerializer,
+        responses=MessageToResponseSerializer,
         summary="Получение сообщения по id",
     )
     def get(self, request, *args, **kwargs):
@@ -28,8 +28,8 @@ class MessageDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         tags=["Отклики и сообщения"],
-        request=MessageSerializer,
-        responses=MessageSerializer,
+        request=MessageToResponseSerializer,
+        responses=MessageToResponseSerializer,
         summary="Обновление сообщения по id",
     )
     def put(self, request, *args, **kwargs):
@@ -37,8 +37,8 @@ class MessageDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         tags=["Отклики и сообщения"],
-        request=MessageSerializer,
-        responses=MessageSerializer,
+        request=MessageToResponseSerializer,
+        responses=MessageToResponseSerializer,
         summary="Удаление сообщения по id",
     )
     def delete(self, request, *args, **kwargs):
@@ -46,8 +46,8 @@ class MessageDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         tags=["Отклики и сообщения"],
-        request=MessageSerializer,
-        responses=MessageSerializer,
+        request=MessageToResponseSerializer,
+        responses=MessageToResponseSerializer,
         summary="Частичное обновление сообщения по id",
     )
     def patch(self, request, *args, **kwargs):
@@ -55,16 +55,16 @@ class MessageDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class MessageListView(generics.ListCreateAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
+    queryset = MessageToResponse.objects.all()
+    serializer_class = MessageToResponseSerializer
 
     def get_queryset(self):
         return super().get_queryset().filter(chat=self.kwargs["chat_id"])
 
     @extend_schema(
         tags=["Отклики и сообщения"],
-        request=MessageSerializer,
-        responses=MessageSerializer,
+        request=MessageToResponseSerializer,
+        responses=MessageToResponseSerializer,
         summary="Добавление сообщения",
     )
     def post(self, request, *args, **kwargs):
@@ -72,7 +72,7 @@ class MessageListView(generics.ListCreateAPIView):
 
     @extend_schema(
         tags=["Отклики и сообщения"],
-        responses=MessageSerializer,
+        responses=MessageToResponseSerializer,
         summary="Получение всех сообщений",
     )
     def get(self, request, *args, **kwargs):
