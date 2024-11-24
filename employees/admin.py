@@ -29,13 +29,14 @@ class EmployeeAdmin(admin.ModelAdmin):
         "country",
         "city",
         "slug",
-        "get_avatar",
     )
     # list_editable = (
     #     "first_name",
     #     "last_name",
     #     "middle_name",
     # )
+    filter_horizontal = ("stacks",)
+    save_on_top = True
 
     def get_avatar(self, obj):
         return format_html(
