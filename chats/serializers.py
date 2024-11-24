@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import ResponseVacancy, Message, Interview
+from .models import ResponseVacancy, MessageToResponse, Interview
 
 
-class MessageSerializer(serializers.ModelSerializer):
+class MessageToResponseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Message
+        model = MessageToResponse
         fields = "__all__"
 
 
