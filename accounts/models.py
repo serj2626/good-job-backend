@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserM
 from django.db import models
 from django.utils import timezone
 
-from common.const import USER_TYPES
+from common.const import STATUS_FRIEND_REQUEST, USER_TYPES
 
 
 class CustomUserManager(UserManager):
@@ -38,6 +38,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=255, choices=USER_TYPES, default="Employee", verbose_name="Тип"
     )
     online = models.BooleanField(default=False, verbose_name="онлайн")
+    friends = models.ManyToManyField(
+        "User", blank=True, symmetrical=True, verbose_name="Друзья"
+    )
     is_verified = models.BooleanField(default=False, verbose_name="подтвержден")
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -58,3 +61,48 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.get_type_display()} ({self.email})"
+
+
+class FriendRequest(models.Model):
+    """
+    Модель заявки в друзья
+    """
+
+    from_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="from_user"
+    )
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="to_user")
+    status = models.CharField(
+        max_length=255, choices=STATUS_FRIEND_REQUEST, default="pending"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Заявка в друзья"
+        verbose_name_plural = "Заявки в друзья"
+
+    def __str__(self):
+        return f"Заявка в друзья {self.from_user} -> {self.to_user}"
+
+
+class Message(models.Model):
+    from_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="from_user_messages",
+        verbose_name="Отправитель",
+    )
+    to_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="to_user_messages",
+        verbose_name="Получатель",
+    )
+    content = models.TextField("Сообщение", max_length=5000)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлен")
+
+    class Meta:
+        verbose_name = "Сообщение"
+        verbose_name_plural = "Сообщения"
