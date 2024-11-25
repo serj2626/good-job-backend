@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from common.const import TYPE_SOCIAL_LINK
+from common.const import TYPE_EDUCATION, TYPE_GENDER, TYPE_SOCIAL_LINK
 from core.models import Category, Stack
 from common.models import ProfileModel, ResumeOrVacancyModel
 from common.service import (
@@ -30,8 +30,9 @@ class Employee(ProfileModel):
     last_name = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Фамилия"
     )
-    middle_name = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="Отчество"
+
+    gender = models.CharField(
+        max_length=255, choices=TYPE_GENDER, default="other", verbose_name="Пол"
     )
     date_of_birth = models.DateField(
         blank=True, null=True, verbose_name="Дата рождения"
@@ -66,7 +67,10 @@ class Project(models.Model):
     """Модель проекта."""
 
     employee = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, verbose_name="Работник"
+        Employee,
+        on_delete=models.CASCADE,
+        related_name="projects",
+        verbose_name="Работник",
     )
     title = models.CharField("Название проекта", max_length=300)
     category = models.ForeignKey(
@@ -94,7 +98,10 @@ class Experience(models.Model):
     """Модель опыта работы."""
 
     employee = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, verbose_name="Работник"
+        Employee,
+        on_delete=models.CASCADE,
+        verbose_name="Работник",
+        related_name="experiences",
     )
     company = models.CharField("Компания", max_length=300)
     category = models.ForeignKey(
@@ -110,7 +117,7 @@ class Experience(models.Model):
     end_date = models.DateField("Окончание работы", blank=True, null=True)
 
     def clean(self):
-        if self.end_date <= self.start_date:
+        if self.end_date and self.start_date and (self.end_date <= self.start_date):
             raise ValidationError(
                 "Дата окончания работы не может быть раньше даты начала работы"
             )
@@ -128,7 +135,10 @@ class Resume(ResumeOrVacancyModel):
     """Модель резюме."""
 
     employee = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, verbose_name="Работник"
+        Employee,
+        on_delete=models.CASCADE,
+        verbose_name="Работник",
+        related_name="resumes",
     )
     avatar = models.ImageField(
         "Аватар", upload_to=get_path_for_avatar, blank=True, null=True
@@ -142,3 +152,37 @@ class Resume(ResumeOrVacancyModel):
 
     def __str__(self):
         return f"Резюме от {self.employee}"
+
+
+
+
+class Education(models.Model):
+    """Модель образования."""
+
+    employee = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        verbose_name="Работник",
+        related_name="educations",
+    )
+    type = models.CharField(
+        "Тип", max_length=300, choices=TYPE_EDUCATION, default="university"
+    )
+    university = models.CharField("Университет", max_length=300)
+    specialization = models.CharField("Специализация", max_length=300)
+    start_date = models.DateField("Начало обучения")
+    end_date = models.DateField("Окончание обучения", blank=True, null=True)
+
+    def clean(self):
+        if self.end_date and self.start_date and (self.end_date <= self.start_date):
+            raise ValidationError(
+                "Дата окончания обучения не может быть раньше даты начала обучения"
+            )
+        return super().clean()
+
+    class Meta:
+        verbose_name = "Образование"
+        verbose_name_plural = "Образование"
+
+    def __str__(self):
+        return f"Образование {self.employee} в {self.university}"

@@ -1,13 +1,14 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 
-from .models import Employee, Experience, Resume
+from .models import Employee, Experience, Resume, Project
 
 from .serializers import (
     EmployeeSerializer,
     ExperienceSerializer,
     ResumeListCreateSerializer,
     ResumeSerializer,
+    ProjectSerializer
 )
 
 
@@ -153,6 +154,77 @@ class ResumeDetailView(generics.RetrieveUpdateDestroyAPIView):
         request=ResumeSerializer,
         responses=ResumeSerializer,
         summary="Частичное обновление резюме по id",
+    )
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
+
+
+class ProjectListView(generics.ListCreateAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
+
+    @extend_schema(
+        tags=["Проекты"],
+        request=ProjectSerializer,
+        responses=ProjectSerializer,
+        summary="Добавление проекта",
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+    
+    @extend_schema(
+        tags=["Проекты"],
+        responses=ProjectSerializer,
+        summary="Получение всех проектов",
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs): 
+        employee = request.user.employee
+        data = request.data
+        serializer = self.get_serializer(data=data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(employee=employee)
+
+        return Response(serializer.data, status=201)
+    
+
+class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
+
+    @extend_schema(
+        tags=["Проекты"],
+        responses=ProjectSerializer,
+        summary="Получение проекта по id",
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Проекты"],
+        request=ProjectSerializer,
+        responses=ProjectSerializer,
+        summary="Обновление проекта по id",
+    )
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Проекты"],
+        request=ProjectSerializer,
+        responses=ProjectSerializer,
+        summary="Удаление проекта по id",
+    )
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+    @extend_schema(
+        tags=["Проекты"],
+        request=ProjectSerializer,
+        responses=ProjectSerializer,
+        summary="Частичное обновление проекта по id",
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
