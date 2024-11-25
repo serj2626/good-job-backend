@@ -1,7 +1,6 @@
-from tokenize import Comment
 from rest_framework import serializers
 from accounts.serializers import UserDataSerializer
-from companies.models import Company, Vacancy
+from companies.models import Company, Vacancy, Comment
 
 
 class CompanySerializer(serializers.ModelSerializer):
