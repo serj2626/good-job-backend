@@ -12,6 +12,7 @@ class StackSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source="get_name_display")
     class Meta:
         model = Category
         fields = "__all__"
