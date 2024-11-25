@@ -85,3 +85,10 @@ STATUS_FRIEND_REQUEST = (
     ("accepted", "Принята"),
     ("rejected", "Отклонена"),
 )
+
+TYPE_EDUCATION = (
+    ("university", "Высшее образование"),
+    ("course", "Курсы"),
+)
+
+TYPE_GENDER = (("male", "Мужской"), ("female", "Женский"), ("other", "Не указано"))
