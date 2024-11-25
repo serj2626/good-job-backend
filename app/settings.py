@@ -64,8 +64,8 @@ SIMPLE_JWT = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     "NON_FIELD_ERRORS_KEY": "errors",
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         # "rest_framework.authentication.SessionAuthentication",
         # "rest_framework.authentication.TokenAuthentication",
