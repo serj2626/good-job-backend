@@ -1,6 +1,22 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Employee, Experience, Project, Resume, SocialLinkEmployee
+from .models import Employee, Experience, Project, Resume, SocialLinkEmployee, Education
+
+
+@admin.register(Education)
+class EducationAdmin(admin.ModelAdmin):
+    """
+    Админка образования
+    """
+
+    list_display = (
+        "employee",
+        "type",
+        "university",
+        "specialization",
+        "start_date",
+        "end_date",
+    )
 
 
 @admin.register(SocialLinkEmployee)
@@ -23,7 +39,7 @@ class EmployeeAdmin(admin.ModelAdmin):
         "position",
         "last_name",
         "first_name",
-        "middle_name",
+        "gender",
         "date_of_birth",
         "phone",
         "country",
@@ -40,7 +56,9 @@ class EmployeeAdmin(admin.ModelAdmin):
 
     def get_avatar(self, obj):
         return format_html(
-            '<img src="{}" width="50" style="border-radius: 50px" height="50" />'.format(obj.avatar.url)
+            '<img src="{}" width="50" style="border-radius: 50px" height="50" />'.format(
+                obj.avatar.url
+            )
         )
 
     get_avatar.short_description = "Аватар"
@@ -83,7 +101,7 @@ class ResumeAdmin(admin.ModelAdmin):
     )
     list_editable = ("min_salary", "max_salary", "work_schedule", "visibility")
 
-    filter_horizontal = ("stacks", )
+    filter_horizontal = ("stacks",)
     save_on_top = True
 
 
