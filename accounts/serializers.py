@@ -11,6 +11,7 @@ class UserType(Enum):
 
 
 class UserDataSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source="get_type_display")
     class Meta:
         model = User
         fields = ["email", "type"]
