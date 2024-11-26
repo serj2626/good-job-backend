@@ -9,6 +9,7 @@ from common.service import (
     get_path_for_avatar_employee,
     get_path_for_image_project,
 )
+from django.utils.timesince import timesince
 
 User = get_user_model()
 
@@ -79,12 +80,20 @@ class Project(models.Model):
     image = models.ImageField(
         "Постер", upload_to=get_path_for_image_project, blank=True, null=True
     )
-    likes = models.ManyToManyField(User, verbose_name="Лайки", blank=True)
+    likes = models.ManyToManyField(
+        User, verbose_name="Лайки", blank=True, related_name="+"
+    )
+    dislikes = models.ManyToManyField(
+        User, verbose_name="Дизлайки", blank=True, related_name="+"
+    )
     stacks = models.ManyToManyField(Stack, verbose_name="Стек", blank=True)
     link = models.URLField("Ссылка на проект", blank=True, null=True)
     description = models.TextField("Описание", max_length=3000, blank=True, null=True)
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
+
+    def time_ago(self):
+        return timesince(self.created_at)
 
     class Meta:
         verbose_name = "Проект"
@@ -154,8 +163,6 @@ class Resume(ResumeOrVacancyModel):
         return f"Резюме от {self.employee}"
 
 
-
-
 class Education(models.Model):
     """Модель образования."""
 
@@ -186,3 +193,48 @@ class Education(models.Model):
 
     def __str__(self):
         return f"Образование {self.employee} в {self.university}"
+
+
+class CommentProject(models.Model):
+    """
+    Модель комментария к проекту.
+    """
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        verbose_name="Проект",
+        related_name="all_comments",
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        related_name="user_project_comments",
+    )
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        verbose_name="Родительский комментарий",
+        blank=True,
+        null=True,
+    )
+    likes = models.ManyToManyField(
+        User, verbose_name="Лайки", blank=True, related_name="+"
+    )
+    dislikes = models.ManyToManyField(
+        User, verbose_name="Дизлайки", blank=True, related_name="+"
+    )
+    text = models.TextField("Текст", max_length=3000)
+    created_at = models.DateTimeField("Создан", auto_now_add=True)
+    updated_at = models.DateTimeField("Обновлен", auto_now=True)
+
+    def time_ago(self):
+        return timesince(self.created_at)
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    def __str__(self):
+        return f"Комментарий к проекту {self.project}"

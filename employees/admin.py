@@ -1,6 +1,42 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Employee, Experience, Project, Resume, SocialLinkEmployee, Education
+from .models import (
+    Employee,
+    Experience,
+    Project,
+    Resume,
+    SocialLinkEmployee,
+    Education,
+    CommentProject,
+)
+
+
+@admin.register(CommentProject)
+class CommentProjectAdmin(admin.ModelAdmin):
+    """
+    Админка комментариев к проекту
+    """
+
+    list_display = (
+        "project",
+        "user",
+        "get_text",
+        "get_likes",
+        "get_dislikes",
+    )
+
+    def get_text(self, obj):
+        return obj.text[:36] + "..."
+
+    def get_likes(self, obj):
+        return obj.likes.count()
+
+    def get_dislikes(self, obj):
+        return obj.dislikes.count()
+
+    get_likes.short_description = "Лайки"
+    get_dislikes.short_description = "Дизлайки"
+    get_text.short_description = "Текст комментария"
 
 
 @admin.register(Education)
@@ -120,3 +156,5 @@ class ExperienceAdmin(admin.ModelAdmin):
         "end_date",
         "category",
     )
+
+    filter_horizontal = ("stacks",)

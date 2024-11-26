@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from core.models import Category, Stack
 from common.const import WORK_SCHEDULE
 from common.service import get_clear_slug
-
+from django.utils.timesince import timesince
 
 class ProfileModel(models.Model):
     """
