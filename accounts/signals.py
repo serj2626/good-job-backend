@@ -26,5 +26,8 @@ def user_logged_out_callback(sender, request, user, **kwargs):
 def save_user_profile(sender, instance, created, **kwargs):
     if instance.type == "Company" and created:
         Company.objects.create(user=instance)
-    else:
+    elif instance.type == "Employee" and created:
         Employee.objects.create(user=instance)
+    elif instance.is_superuser:
+        instance.type = "Admin"
+        instance.save()
