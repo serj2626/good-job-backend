@@ -45,6 +45,27 @@ class ResponseVacancy(models.Model):
         return f"Отклик на вакансию от {self.resume.employee}"
 
 
+class ResponseLetter(models.Model):
+    """Модель сопроводительного письма"""
+
+    response_vacancy = models.ForeignKey(
+        ResponseVacancy,
+        on_delete=models.CASCADE,
+        verbose_name="Отклик",
+        related_name="all_letters",
+    )
+    text = models.TextField("Текст письма", max_length=1500)
+    created_at = models.DateTimeField("Создан", auto_now_add=True)
+    updated_at = models.DateTimeField("Обновлен", auto_now=True)
+
+    class Meta:
+        verbose_name = "Сопроводительное письмо"
+        verbose_name_plural = "Сопроводительные письма"
+
+    def __str__(self):
+        return f"Сопроводительное письмо от {self.response_vacancy.resume.employee}"
+
+
 class MessageToResponse(models.Model):
     """Модель сообщения в отклике на вакансию"""
 
