@@ -62,7 +62,11 @@ TYPE_NOTIFICATION = (
 )
 
 
-USER_TYPES = (("Company", "Компания"), ("Employee", "Работник"))
+USER_TYPES = (
+    ("Company", "Компания"),
+    ("Employee", "Работник"),
+    ("Admin", "Администратор"),
+)
 
 
 TYPE_SOCIAL_LINK = (
