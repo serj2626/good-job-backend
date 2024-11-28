@@ -1,5 +1,4 @@
-from datetime import datetime
-import django
+from datetime import date
 from rest_framework import serializers
 from accounts.serializers import UserDataSerializer
 from core.serializers import CategorySerializer
@@ -66,14 +65,18 @@ class EmployeeSerializer(serializers.ModelSerializer):
     user = UserDataSerializer()
     stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
     projects = ProjectSerializer(many=True)
-    age = serializers.SerializerMethodField()
     gender = serializers.CharField(source="get_gender_display")
     experiences = ExperienceSerializer(many=True)
     educations = EducationSerializer(many=True)
-
-    def get_age(self, obj):
-        return datetime.now().year - obj.date_of_birth.year
+    age = serializers.SerializerMethodField()
 
     class Meta:
         model = Employee
         fields = "__all__"
+
+    def get_age(self, obj):
+        return (
+            None
+            if not obj.date_of_birth
+            else date.today().year - obj.date_of_birth.year
+        )
