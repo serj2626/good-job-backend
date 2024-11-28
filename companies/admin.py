@@ -43,6 +43,7 @@ class VacancyAdmin(admin.ModelAdmin):
         "work_experience",
         "status_vacancy",
     )
+    filter_horizontal = ("stacks",)
 
     list_editable = (
         "level",
