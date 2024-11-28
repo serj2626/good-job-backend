@@ -5,16 +5,16 @@ from .models import User
 from enum import Enum
 
 
-class UserType(Enum):
-    Company = "Компания"
-    Employee = "Работник"
-
-
 class UserDataSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source="get_type_display")
+    count_friends = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["email", "type"]
+        fields = ["email", "type", "online", "count_friends"]
+
+    def get_count_friends(self, obj):
+        return obj.friends.count()
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
