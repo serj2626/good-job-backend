@@ -5,6 +5,7 @@ from common.const import TYPE_EDUCATION, TYPE_GENDER, TYPE_SOCIAL_LINK
 from core.models import Category, Stack
 from common.models import ProfileModel, ResumeOrVacancyModel
 from common.service import (
+    get_clear_slug,
     get_path_for_avatar,
     get_path_for_avatar_employee,
     get_path_for_image_project,
@@ -41,6 +42,11 @@ class Employee(ProfileModel):
     date_of_birth = models.DateField(
         blank=True, null=True, verbose_name="Дата рождения"
     )
+
+    def clean(self):
+        if not self.slug:
+            self.slug = get_clear_slug(self.user.email)
+        super().clean()
 
     class Meta:
         verbose_name = "Работник"
