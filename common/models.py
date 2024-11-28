@@ -6,6 +6,7 @@ from common.const import WORK_SCHEDULE
 from common.service import get_clear_slug
 from django.utils.timesince import timesince
 
+
 class ProfileModel(models.Model):
     """
     Абстрактная модель для профилей Компании и Работодателя.
@@ -29,11 +30,6 @@ class ProfileModel(models.Model):
 
     class Meta:
         abstract = True
-
-    def clean(self):
-        if not self.slug:
-            self.slug = get_clear_slug(self.user.email)
-        super().clean()
 
 
 class ResumeOrVacancyModel(models.Model):
