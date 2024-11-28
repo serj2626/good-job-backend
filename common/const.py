@@ -2,9 +2,11 @@ WORK_SCHEDULE = (
     ("full-time", "Полный рабочий день"),
     ("part-time", "Частичная занятость"),
     ("remote", "Удаленная работа"),
+    ("hybrid", "Гибридная работа"),
 )
 
 LEVELS_REQUIREMENTS = (
+    ("none", "Не имеет значения"),
     ("intern", "Стажер"),
     ("junior", "Junior"),
     ("junior_plus", "Junior+"),
