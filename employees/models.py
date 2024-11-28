@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -40,8 +41,15 @@ class Employee(ProfileModel):
         max_length=255, choices=TYPE_GENDER, default="other", verbose_name="Пол"
     )
     date_of_birth = models.DateField(
-        blank=True, null=True, verbose_name="Дата рождения"
+        blank=True, null=True, verbose_name="Дата рождения", default=timezone.now
     )
+
+    def clean_date_of_birth(self):
+        if self.date_of_birth > timezone.now():
+            raise ValidationError("Дата рождения не может быть в будущем")
+        if (timezone.now() - self.date_of_birth) < 18:
+            raise ValidationError("Работник должен быть старше 18 лет")
+        return self.date_of_birth
 
     def clean(self):
         if not self.slug:
@@ -242,8 +250,8 @@ class CommentProject(models.Model):
         return timesince(self.created_at)
 
     class Meta:
-        verbose_name = "Комментарий"
-        verbose_name_plural = "Комментарии"
+        verbose_name = "Комментарий к проекту"
+        verbose_name_plural = "Комментарии к проекту"
 
     def __str__(self):
         return f"Комментарий к проекту {self.project}"
