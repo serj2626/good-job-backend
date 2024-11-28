@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
-from common.service import get_path_for_avatar_company
+from common.service import get_clear_slug, get_path_for_avatar_company
 from employees.models import Resume
 from common.models import ProfileModel, ResumeOrVacancyModel
 from common.const import (
@@ -26,7 +26,11 @@ class Company(ProfileModel):
     count_employees = models.SmallIntegerField("Количество  сотрудников", default=0)
     name = models.CharField("Название компании", max_length=500, blank=True, null=True)
     site = models.URLField("Сайт компании", blank=True, null=True)
-
+    
+    def clean(self):
+        if not self.slug:
+            self.slug = get_clear_slug(self.user.email)
+        super().clean()
     class Meta:
         verbose_name = "Компания"
         verbose_name_plural = "Компании"
