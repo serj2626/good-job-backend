@@ -15,5 +15,5 @@ urlpatterns = [
     path("comments/", CommentListView.as_view(), name="comments"),
     path("comments/<int:pk>/", CommentDetailView.as_view(), name="comments-detail"),
     path("vacancy/", VacancyListView.as_view(), name="vacancy-list"),
-    path("vacancy/<int:pk>/", VacancyDetailView.as_view(), name="vacancy-detail"),
+    path("vacancy/<pk>/", VacancyDetailView.as_view(), name="vacancy-detail"),
 ]
