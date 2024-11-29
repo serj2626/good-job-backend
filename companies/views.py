@@ -5,6 +5,7 @@ from .models import Comment, Company, Vacancy
 
 from .serializers import (
     CommentSerializer,
+    CompanyDetailSerializer,
     CompanySerializer,
     VacancyListCreateSerializer,
     VacancySerializer,
@@ -34,7 +35,7 @@ class CompanyListView(generics.ListCreateAPIView):
 
 
 class CompanyDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = CompanySerializer
+    serializer_class = CompanyDetailSerializer
     queryset = Company.objects.all()
 
     @extend_schema(
