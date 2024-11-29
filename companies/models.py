@@ -26,11 +26,12 @@ class Company(ProfileModel):
     count_employees = models.SmallIntegerField("Количество  сотрудников", default=0)
     name = models.CharField("Название компании", max_length=500, blank=True, null=True)
     site = models.URLField("Сайт компании", blank=True, null=True)
-    
+
     def clean(self):
         if not self.slug:
             self.slug = get_clear_slug(self.user.email)
         super().clean()
+
     class Meta:
         verbose_name = "Компания"
         verbose_name_plural = "Компании"
@@ -43,7 +44,10 @@ class Vacancy(ResumeOrVacancyModel):
     """Модель вакансии."""
 
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, verbose_name="Компания"
+        Company,
+        on_delete=models.CASCADE,
+        verbose_name="Компания",
+        related_name="vacancies",
     )
     level = models.CharField(
         "Уровень", max_length=200, choices=LEVELS_REQUIREMENTS, default="junior"
@@ -55,6 +59,9 @@ class Vacancy(ResumeOrVacancyModel):
     requirements = models.TextField(
         "Требования", max_length=3000, blank=True, null=True
     )
+    city = models.CharField("Город", max_length=200, blank=True, null=True)
+    country = models.CharField("Страна", max_length=200, blank=True, null=True)
+    metro = models.CharField("Станция метро", max_length=200, blank=True, null=True)
     description = models.TextField("Описание", max_length=3500, blank=True, null=True)
 
     class Meta:
