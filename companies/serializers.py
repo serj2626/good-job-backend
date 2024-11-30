@@ -6,6 +6,11 @@ from django.utils.timesince import timesince
 
 class CompanySerializer(serializers.ModelSerializer):
     user = UserDataSerializer()
+    stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    count_vacancies = serializers.SerializerMethodField()
+
+    def get_count_vacancies(self, obj):
+        return obj.vacancies.count()
 
     class Meta:
         model = Company
