@@ -98,3 +98,10 @@ TYPE_EDUCATION = (
 )
 
 TYPE_GENDER = (("male", "Мужской"), ("female", "Женский"), ("other", "Не указано"))
+
+
+CURRENCY_TYPE = (
+    ("RUB", "RUB"),
+    ("USD", "USD"),
+    ("EUR", "EUR"),
+)
