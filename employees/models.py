@@ -167,7 +167,11 @@ class Resume(ResumeOrVacancyModel):
         related_name="resumes",
     )
     avatar = models.ImageField(
-        "Аватар", upload_to=get_path_for_avatar, blank=True, null=True
+        "Аватар",
+        upload_to=get_path_for_avatar,
+        default="employees/default.png",
+        blank=True,
+        null=True,
     )
     about = models.TextField("О себе", max_length=1000, blank=True, null=True)
     visibility = models.BooleanField("Видимость", default=True)
