@@ -1,11 +1,22 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
-from common.service import get_clear_slug, get_path_for_avatar_company
+from common.service import (
+    get_clear_slug,
+    get_path_for_avatar_company,
+    get_path_for_check_company_certificate,
+    get_path_for_check_company_certificate_nalog,
+    get_path_for_check_company_constitution,
+    get_path_for_check_company_egrul,
+    get_path_for_check_company_license,
+    get_path_for_check_company_no_debt,
+)
 from employees.models import Resume
 from common.models import ProfileModel, ResumeOrVacancyModel
 from common.const import (
+    COMPANY_TYPES,
     LEVELS_REQUIREMENTS,
+    STATUS_CHECK_COMPANY,
     STATUS_VACANCY,
 )
 from django.utils.timesince import timesince
@@ -20,8 +31,15 @@ class Company(ProfileModel):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
+    type = models.CharField(
+        "Тип компании", choices=COMPANY_TYPES, max_length=30, default="OOO"
+    )
     avatar = models.ImageField(
-        "Аватар", upload_to=get_path_for_avatar_company, blank=True, null=True
+        "Аватар",
+        upload_to=get_path_for_avatar_company,
+        default="company/company-default.jpg",
+        blank=True,
+        null=True,
     )
     count_employees = models.SmallIntegerField("Количество  сотрудников", default=0)
     name = models.CharField("Название компании", max_length=500, blank=True, null=True)
@@ -38,6 +56,67 @@ class Company(ProfileModel):
 
     def __str__(self):
         return f"Компания {self.name}"
+
+
+class CheckCompany(models.Model):
+    """
+    Модель проверки компании.
+    """
+
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE,
+        verbose_name="Компания",
+        related_name="checks",
+    )
+
+    egrul = models.FileField(
+        "Выписка из ЕГРЮЛ и ЕГРИП", upload_to=get_path_for_check_company_egrul
+    )
+    certificate = models.FileField(
+        "Cвидетельство о регистрации фирмы или ИП",
+        upload_to=get_path_for_check_company_certificate,
+    )
+    certificate_nalog = models.FileField(
+        "Cправка о постановке на учет в налоговом органе",
+        upload_to=get_path_for_check_company_certificate_nalog,
+    )
+    constitution = models.FileField(
+        "Устав",
+        upload_to=get_path_for_check_company_constitution,
+        blank=True,
+        null=True,
+    )
+    license = models.FileField(
+        "Лицензия на необходимые виды деятельности",
+        upload_to=get_path_for_check_company_license,
+    )
+    no_debt = models.FileField(
+        "Справка, подтверждающая отсутствие налоговых задолженностей",
+        upload_to=get_path_for_check_company_no_debt,
+    )
+    consent = models.BooleanField(
+        default=False, verbose_name="Согласие на обработку персональных данных"
+    )
+
+    status = models.CharField(
+        "Статус проверки",
+        max_length=200,
+        choices=STATUS_CHECK_COMPANY,
+        default="pending",
+    )
+
+    created_at = models.DateTimeField("Создан", auto_now_add=True)
+    updated_at = models.DateTimeField("Обновлен", auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.consent:
+            raise ValueError("Вы не согласились с обработкой персональных данных")
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Проверка компании"
+        verbose_name_plural = "Проверки компании"
 
 
 class Vacancy(ResumeOrVacancyModel):
