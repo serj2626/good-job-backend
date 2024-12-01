@@ -8,9 +8,13 @@ class CompanySerializer(serializers.ModelSerializer):
     user = UserDataSerializer()
     stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
     count_vacancies = serializers.SerializerMethodField()
+    full_name = serializers.SerializerMethodField()
 
     def get_count_vacancies(self, obj):
         return obj.vacancies.count()
+
+    def get_full_name(self, obj):
+        return f'{obj.get_type_display()} {obj.name}'
 
     class Meta:
         model = Company
@@ -59,6 +63,10 @@ class CommentSerializer(serializers.ModelSerializer):
 class CompanyDetailSerializer(serializers.ModelSerializer):
     user = UserDataSerializer()
     vacancies = VacancySerializer(many=True)
+    full_name = serializers.SerializerMethodField()
+
+    def get_full_name(self, obj):
+        return f'{obj.get_type_display()} {obj.name}'
 
     class Meta:
         model = Company
