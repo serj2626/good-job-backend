@@ -105,3 +105,21 @@ CURRENCY_TYPE = (
     ("USD", "USD"),
     ("EUR", "EUR"),
 )
+
+COMPANY_TYPES = (
+    ("OOO", "ООО"),
+    ("IP", "ИП"),
+    ("UP", "УП"),
+    ("PAO", "ПАО"),
+    ("Corp", "Corp"),
+    ("ZAO", "ЗАО"),
+    ("OAO", "ОАО"),
+    ("AO", "АО"),
+    ("other", "Другое"),
+)
+
+STATUS_CHECK_COMPANY = (
+    ("pending", "На расмотрении"),
+    ("accepted", "Принято"),
+    ("rejected", "Отклонено"),
+)
