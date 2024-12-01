@@ -1,6 +1,12 @@
 from django.contrib import admin
+from .models import Comment, Company, Vacancy, CheckCompany
 
-from .models import Comment, Company, Vacancy
+
+class CheckCompanyInline(admin.TabularInline):
+    model = CheckCompany
+
+
+admin.site.register(CheckCompany)
 
 
 @admin.register(Company)
@@ -9,9 +15,12 @@ class CompanyAdmin(admin.ModelAdmin):
     Админка компаний
     """
 
+    inlines = [CheckCompanyInline]
+
     list_display = (
+        "full_name",
         "user",
-        "name",
+        "type",
         "site",
         "phone",
         "country",
@@ -20,9 +29,13 @@ class CompanyAdmin(admin.ModelAdmin):
         "is_verified",
     )
 
+    def full_name(self, obj):
+        return f'{obj.get_type_display()} {obj.name}'
+
     def is_verified(self, obj):
         return obj.user.is_verified
 
+    full_name.short_description = "Название компании"
     is_verified.short_description = "Проверена"
 
 
