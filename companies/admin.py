@@ -30,13 +30,10 @@ class CompanyAdmin(admin.ModelAdmin):
     )
 
     def full_name(self, obj):
-        return f'{obj.get_type_display()} {obj.name}'
+        return f"{obj.get_type_display()} {obj.name}"
 
-    def is_verified(self, obj):
-        return obj.user.is_verified
-
+    save_on_top = True
     full_name.short_description = "Название компании"
-    is_verified.short_description = "Проверена"
 
 
 @admin.register(Vacancy)
