@@ -119,6 +119,7 @@ COMPANY_TYPES = (
 )
 
 STATUS_CHECK_COMPANY = (
+    ("pending", "Отправлено"),
     ("pending", "На расмотрении"),
     ("accepted", "Принято"),
     ("rejected", "Отклонено"),
