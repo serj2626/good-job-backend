@@ -44,6 +44,7 @@ class Company(ProfileModel):
     count_employees = models.SmallIntegerField("Количество  сотрудников", default=0)
     name = models.CharField("Название компании", max_length=500, blank=True, null=True)
     site = models.URLField("Сайт компании", blank=True, null=True)
+    is_verified = models.BooleanField("Проверенная компания", default=False, blank=True)
 
     def clean(self):
         if not self.slug:
@@ -55,7 +56,7 @@ class Company(ProfileModel):
         verbose_name_plural = "Компании"
 
     def __str__(self):
-        return f"Компания {self.name}"
+        return f"{self.get_type_display()} {self.name}"
 
 
 class CheckCompany(models.Model):
@@ -117,6 +118,11 @@ class CheckCompany(models.Model):
     class Meta:
         verbose_name = "Проверка компании"
         verbose_name_plural = "Проверки компании"
+
+    def __str__(self):
+        return (
+            f"Проверка компании  {self.company.get_type_display()} {self.company.name}"
+        )
 
 
 class Vacancy(ResumeOrVacancyModel):
