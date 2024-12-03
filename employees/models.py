@@ -169,7 +169,7 @@ class Resume(ResumeOrVacancyModel):
     avatar = models.ImageField(
         "Аватар",
         upload_to=get_path_for_avatar,
-        default="employees/default.png",
+        default="employees/default.jpg",
         blank=True,
         null=True,
     )
