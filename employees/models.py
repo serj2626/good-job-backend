@@ -2,12 +2,12 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from common.const import TYPE_EDUCATION, TYPE_GENDER, TYPE_SOCIAL_LINK
+from common.const import STATUS_EMPLOYEE, TYPE_EDUCATION, TYPE_GENDER, TYPE_SOCIAL_LINK
 from core.models import Category, Stack
 from common.models import ProfileModel, ResumeOrVacancyModel
 from common.service import (
     get_clear_slug,
-    get_path_for_avatar,
+    get_path_for_avatar_resume,
     get_path_for_avatar_employee,
     get_path_for_image_project,
 )
@@ -21,6 +21,9 @@ class Employee(ProfileModel):
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    status = models.CharField(
+        choices=STATUS_EMPLOYEE, max_length=300, default="search", verbose_name="Статус"
     )
     position = models.CharField("Должность", max_length=300, blank=True, null=True)
     avatar = models.ImageField(
@@ -168,8 +171,8 @@ class Resume(ResumeOrVacancyModel):
     )
     avatar = models.ImageField(
         "Аватар",
-        upload_to=get_path_for_avatar,
-        default="employees/default.jpg",
+        upload_to=get_path_for_avatar_resume,
+        default="employee/employee.jpg",
         blank=True,
         null=True,
     )
