@@ -55,6 +55,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
 
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.type = "Admin"
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
