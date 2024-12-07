@@ -9,16 +9,16 @@ def get_clear_slug(email: str) -> str:
     return email[:indx]
 
 
-def get_path_for_avatar(instance, filename) -> str:
+def get_path_for_avatar_resume(instance, filename) -> str:
     """
-    Функция возвращает путь к аватару
+    Функция возвращает путь к аватару резюме
 
     :param instance: user
     :param filename: filename
     :return: path
     """
 
-    return f"resumes/{instance.employee.user.email}/{instance.id}/{filename}"
+    return f"employee/{instance.employee.user.email}/resume/{instance.id}/{filename}"
 
 
 def get_path_for_avatar_employee(instance, filename) -> str:
@@ -30,7 +30,7 @@ def get_path_for_avatar_employee(instance, filename) -> str:
     :return: path
     """
 
-    return f"employees/{instance.user.email}/{filename}"
+    return f"employee/{instance.user.email}/avatar/{filename}"
 
 
 def get_path_for_avatar_company(instance, filename) -> str:
@@ -42,7 +42,7 @@ def get_path_for_avatar_company(instance, filename) -> str:
     :return: path
     """
 
-    return f"company/{instance.user.email}/{instance.name}/{filename}"
+    return f"company/{instance.user.email}/avatar/{filename}"
 
 
 def get_path_for_photo_feedback(instance, filename) -> str:
@@ -66,7 +66,7 @@ def get_path_for_image_project(instance, filename) -> str:
     :return: path
     """
 
-    return f"projects/{instance.employee.user.email}/{filename}"
+    return f"projects/{instance.employee.user.email}/{instance.id}/{filename}"
 
 
 def get_path_for_check_company_egrul(instance, filename):
@@ -77,7 +77,7 @@ def get_path_for_check_company_egrul(instance, filename):
     :param filename: filename
     :return: path
     """
-    return f"company/{instance.company.slug}/docs/egrul/{filename}"
+    return f"company/{instance.company.user.email}/docs/egrul/{filename}"
 
 
 def get_path_for_check_company_certificate(instance, filename):
@@ -88,7 +88,7 @@ def get_path_for_check_company_certificate(instance, filename):
     :param filename: filename
     :return: path
     """
-    return f"company/{instance.company.slug}/docs/certificate/{filename}"
+    return f"company/{instance.company.user.email}/docs/certificate/{filename}"
 
 
 def get_path_for_check_company_certificate_nalog(instance, filename):
@@ -99,7 +99,7 @@ def get_path_for_check_company_certificate_nalog(instance, filename):
     :param filename: filename
     :return: path
     """
-    return f"company/{instance.company.slug}/docs/certificate_nalog/{filename}"
+    return f"company/{instance.company.user.email}/docs/certificate_nalog/{filename}"
 
 
 def get_path_for_check_company_constitution(instance, filename):
@@ -110,7 +110,7 @@ def get_path_for_check_company_constitution(instance, filename):
     :param filename: filename
     :return: path
     """
-    return f"company/{instance.company.slug}/docs/constitution/{filename}"
+    return f"company/{instance.company.user.email}/docs/constitution/{filename}"
 
 
 def get_path_for_check_company_license(instance, filename):
@@ -121,7 +121,7 @@ def get_path_for_check_company_license(instance, filename):
     :param filename: filename
     :return: path
     """
-    return f"company/{instance.company.slug}/docs/license/{filename}"
+    return f"company/{instance.company.user.email}/docs/license/{filename}"
 
 
 def get_path_for_check_company_no_debt(instance, filename):
@@ -132,4 +132,4 @@ def get_path_for_check_company_no_debt(instance, filename):
     :param filename: filename
     :return: path
     """
-    return f"company/{instance.company.slug}/docs/no_debt/{filename}"
+    return f"company/{instance.company.user.email}/docs/no_debt/{filename}"

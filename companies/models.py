@@ -37,7 +37,7 @@ class Company(ProfileModel):
     avatar = models.ImageField(
         "Аватар",
         upload_to=get_path_for_avatar_company,
-        default="company/company-default.jpg",
+        default="company/company.jpg",
         blank=True,
         null=True,
     )
