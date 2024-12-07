@@ -64,7 +64,7 @@ SIMPLE_JWT = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "NON_FIELD_ERRORS_KEY": "errors",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         # "rest_framework.authentication.SessionAuthentication",
@@ -159,7 +159,7 @@ USE_TZ = True
 
 
 STATIC_URL = "static/"
-MEDIA_URL = "/media/"
+MEDIA_URL = "media/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
