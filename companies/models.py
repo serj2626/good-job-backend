@@ -147,7 +147,7 @@ class Vacancy(ResumeOrVacancyModel):
     city = models.CharField("Город", max_length=200, blank=True, null=True)
     country = models.CharField("Страна", max_length=200, blank=True, null=True)
     metro = models.CharField("Станция метро", max_length=200, blank=True, null=True)
-    description = models.TextField("Описание", max_length=3500, blank=True, null=True)
+    description = models.TextField("Описание", blank=True, null=True)
 
     class Meta:
         verbose_name = "Вакансия"
