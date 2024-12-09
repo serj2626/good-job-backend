@@ -9,6 +9,12 @@ from .models import User
 from .serializers import UserRegisterSerializer
 
 
+@api_view(["GET"])
+def test(request):
+    user = request.user
+    return Response({"test": "test"})
+
+
 @extend_schema(summary="Получение информации о пользователе")
 @api_view(["GET"])
 def get_user_info(request):
