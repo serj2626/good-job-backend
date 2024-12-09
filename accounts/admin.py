@@ -9,8 +9,8 @@ class MessageAdmin(admin.ModelAdmin):
     """
 
     list_display = (
-        "from_user",
-        "to_user",
+        "sender",
+        "receiver",
         "content",
         "created_at",
         "updated_at",
