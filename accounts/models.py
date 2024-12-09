@@ -92,13 +92,19 @@ class FriendRequest(models.Model):
 
 
 class Message(models.Model):
-    from_user = models.ForeignKey(
+    friend_request = models.ForeignKey(
+        FriendRequest,
+        on_delete=models.CASCADE,
+        related_name="messages",
+        verbose_name="Заявка в друзья",
+    )
+    sender = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="from_user_messages",
         verbose_name="Отправитель",
     )
-    to_user = models.ForeignKey(
+    receiver = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="to_user_messages",
