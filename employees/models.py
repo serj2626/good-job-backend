@@ -108,7 +108,7 @@ class Project(models.Model):
     )
     stacks = models.ManyToManyField(Stack, verbose_name="Стек", blank=True)
     link = models.URLField("Ссылка на проект", blank=True, null=True)
-    description = models.TextField("Описание", max_length=3000, blank=True, null=True)
+    description = models.TextField("Описание", blank=True, null=True)
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
@@ -176,7 +176,7 @@ class Resume(ResumeOrVacancyModel):
         blank=True,
         null=True,
     )
-    about = models.TextField("О себе", max_length=1000, blank=True, null=True)
+    about = models.TextField("О себе", blank=True, null=True)
     visibility = models.BooleanField("Видимость", default=True)
 
     class Meta:
