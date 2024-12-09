@@ -54,7 +54,7 @@ class ResponseLetter(models.Model):
         verbose_name="Отклик",
         related_name="all_letters",
     )
-    text = models.TextField("Текст письма", max_length=1500)
+    text = models.TextField("Текст письма", max_length=5000)
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
