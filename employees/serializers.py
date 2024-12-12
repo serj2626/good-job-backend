@@ -27,14 +27,13 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ResumeListCreateSerializer(serializers.ModelSerializer):
-    employee = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
-    category = serializers.CharField(source="category.name")
+# class ResumeListCreateSerializer(serializers.ModelSerializer):
+#     stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+#     category = serializers.CharField(source="category.name")
 
-    class Meta:
-        model = Resume
-        fields = "__all__"
+#     class Meta:
+#         model = Resume
+#         fields = "__all__"
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
@@ -104,3 +103,13 @@ class EmployeeSerializer(serializers.ModelSerializer):
             if not obj.date_of_birth
             else date.today().year - obj.date_of_birth.year
         )
+
+
+class ResumeListCreateSerializer(serializers.ModelSerializer):
+    employee =  EmployeeDetailSerializer()
+    stacks = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    category = serializers.CharField(source="category.name")
+
+    class Meta:
+        model = Resume
+        fields = "__all__"
