@@ -89,7 +89,7 @@ class ExperienceListView(generics.CreateAPIView):
 
 
 class ResumeListView(generics.ListCreateAPIView):
-    serializer_class = ResumeListCreateSerializer
+    serializer_class = ResumeSerializer
     queryset = Resume.objects.all()
 
     @extend_schema(
