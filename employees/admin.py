@@ -151,7 +151,6 @@ class ExperienceAdmin(admin.ModelAdmin):
         "employee",
         "company",
         "position",
-        "requirements",
         "start_date",
         "end_date",
         "category",
