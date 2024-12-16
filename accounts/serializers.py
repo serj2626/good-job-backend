@@ -2,7 +2,6 @@ from rest_framework import serializers
 
 from common.const import USER_TYPES
 from .models import User
-from enum import Enum
 
 
 class UserDataSerializer(serializers.ModelSerializer):
