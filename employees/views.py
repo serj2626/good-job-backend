@@ -8,8 +8,10 @@ from .serializers import (
     ExperienceSerializer,
     ResumeListCreateSerializer,
     ResumeSerializer,
-    ProjectSerializer
+    ProjectSerializer,
 )
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 class EmployeeListView(generics.ListCreateAPIView):
@@ -171,7 +173,7 @@ class ProjectListView(generics.ListCreateAPIView):
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
-    
+
     @extend_schema(
         tags=["Проекты"],
         responses=ProjectSerializer,
@@ -180,7 +182,7 @@ class ProjectListView(generics.ListCreateAPIView):
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
-    def create(self, request, *args, **kwargs): 
+    def create(self, request, *args, **kwargs):
         employee = request.user.employee
         data = request.data
         serializer = self.get_serializer(data=data, context={"request": request})
@@ -188,7 +190,7 @@ class ProjectListView(generics.ListCreateAPIView):
         serializer.save(employee=employee)
 
         return Response(serializer.data, status=201)
-    
+
 
 class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProjectSerializer
@@ -228,3 +230,31 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
+
+
+class ProjectLikeView(APIView):
+    # authentication_classes = [SessionAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        project = Project.objects.get(id=pk)
+        user = request.user
+        if user in project.likes.all():
+            project.likes.remove(user)
+        else:
+            project.likes.add(user)
+        return Response({"likes": project.likes.count()})
+
+
+class ProjectDislikeView(APIView):
+    # authentication_classes = [SessionAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        project = Project.objects.get(id=pk)
+        user = request.user
+        if user in project.dislikes.all():
+            project.dislikes.remove(user)
+        else:
+            project.dislikes.add(user)
+        return Response({"dislikes": project.dislikes.count()})
