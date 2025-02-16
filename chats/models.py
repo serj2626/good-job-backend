@@ -4,17 +4,16 @@ from django.db import models
 from employees.models import Employee, Resume
 from companies.models import Company, Vacancy
 from common.const import STATUS_INTERVIEW, STATUS_RESPONSES
-
+from common.models import MyBaseModel
 from django.utils.timesince import timesince
 
 
 User = get_user_model()
 
 
-class ResponseVacancy(models.Model):
+class ResponseVacancy(MyBaseModel):
     """Модель отклика на вакансию"""
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     vacancy = models.ForeignKey(
         Vacancy,
         on_delete=models.SET_NULL,
@@ -26,15 +25,14 @@ class ResponseVacancy(models.Model):
         Resume,
         on_delete=models.CASCADE,
         verbose_name="Резюме",
-        related_name="my_responses",
+        related_name="all_responses",
     )
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
+
     status = models.CharField(
         "Статус", max_length=200, choices=STATUS_RESPONSES, default="new"
     )
 
-    def created_at_formatted(self):
+    def time_ago(self):
         return timesince(self.created_at)
 
     class Meta:
@@ -45,7 +43,7 @@ class ResponseVacancy(models.Model):
         return f"Отклик на вакансию от {self.resume.employee}"
 
 
-class ResponseLetter(models.Model):
+class ResponseLetter(MyBaseModel):
     """Модель сопроводительного письма"""
 
     response_vacancy = models.ForeignKey(
@@ -55,8 +53,6 @@ class ResponseLetter(models.Model):
         related_name="all_letters",
     )
     text = models.TextField("Текст письма", max_length=5000)
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
     class Meta:
         verbose_name = "Сопроводительное письмо"
@@ -66,7 +62,7 @@ class ResponseLetter(models.Model):
         return f"Сопроводительное письмо от {self.response_vacancy.resume.employee}"
 
 
-class MessageToResponse(models.Model):
+class MessageToResponse(MyBaseModel):
     """Модель сообщения в отклике на вакансию"""
 
     response_vacancy = models.ForeignKey(
@@ -88,10 +84,8 @@ class MessageToResponse(models.Model):
         related_name="response_vacancy_messages",
     )
     text = models.TextField("Текст сообщения", max_length=1500)
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
-    def created_at_formatted(self):
+    def time_ago(self):
         return timesince(self.created_at)
 
     class Meta:
@@ -102,10 +96,10 @@ class MessageToResponse(models.Model):
         return f"Сообщение от {self.response_vacancy.resume.employee.user}"
 
 
-class Interview(models.Model):
+class Interview(MyBaseModel):
     """Модель интервью"""
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
     response_vacancy = models.ForeignKey(
         ResponseVacancy,
         on_delete=models.CASCADE,
@@ -127,9 +121,8 @@ class Interview(models.Model):
     status = models.CharField(
         "Статус", max_length=200, choices=STATUS_INTERVIEW, default="new"
     )
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
     date_interview = models.DateTimeField("Дата интервью", blank=True, null=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
+
 
     class Meta:
         verbose_name = "Интервью"

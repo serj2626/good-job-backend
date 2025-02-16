@@ -1,42 +1,24 @@
 from django.db import models
-from companies.models import Company
-from employees.models import Employee
+from accounts.models import User
 from common.const import TYPE_NOTIFICATION
+from common.models import MyBaseModel
 
 
-class NotificationEmployee(models.Model):
+class Notification(MyBaseModel):
     """
-    Модель уведомлений для работников
+    Модель уведомлений для работников и  компании
     """
 
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="notifications"
+    )
     message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=255, choices=TYPE_NOTIFICATION)
     read = models.BooleanField(default=False, verbose_name="Прочитано")
 
     class Meta:
-        verbose_name = "Уведомление работника"
-        verbose_name_plural = "Уведомления работников"
+        verbose_name = "Уведомление"
+        verbose_name_plural = "Уведомления"
 
     def __str__(self):
-        return f"Уведомление работника {self.user.name}"
-
-
-class NotificationCompany(models.Model):
-    """
-    Модель уведомлений для компаний
-    """
-
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=255, choices=TYPE_NOTIFICATION)
-    read = models.BooleanField(default=False, verbose_name="Прочитано")
-
-    class Meta:
-        verbose_name = "Уведомление компании"
-        verbose_name_plural = "Уведомления компаний"
-
-    def __str__(self):
-        return f"Уведомление компании {self.user.name}"
+        return f"Уведомление {self.user}"

@@ -50,8 +50,6 @@ class EducationAdmin(admin.ModelAdmin):
         "type",
         "university",
         "specialization",
-        "start_date",
-        "end_date",
     )
 
 
@@ -82,11 +80,7 @@ class EmployeeAdmin(admin.ModelAdmin):
         "city",
         "slug",
     )
-    # list_editable = (
-    #     "first_name",
-    #     "last_name",
-    #     "middle_name",
-    # )
+
     filter_horizontal = ("stacks",)
     save_on_top = True
 
@@ -133,9 +127,9 @@ class ResumeAdmin(admin.ModelAdmin):
         "work_schedule",
         "min_salary",
         "max_salary",
-        "visibility",
+        "is_visible",
     )
-    list_editable = ("min_salary", "max_salary", "work_schedule", "visibility")
+    list_editable = ("min_salary", "max_salary", "work_schedule", "is_visible")
 
     filter_horizontal = ("stacks",)
     save_on_top = True
@@ -151,8 +145,6 @@ class ExperienceAdmin(admin.ModelAdmin):
         "employee",
         "company",
         "position",
-        "start_date",
-        "end_date",
         "category",
     )
 

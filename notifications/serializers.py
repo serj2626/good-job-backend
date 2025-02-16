@@ -1,14 +1,9 @@
 from rest_framework import serializers
-from .models import NotificationCompany, NotificationEmployee
+from .models import Notification
 
 
-class NotificationCompanySerializer(serializers.ModelSerializer):
+class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = NotificationCompany
+        model = Notification
         fields = "__all__"
 
-
-class NotificationEmployeeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NotificationEmployee
-        fields = "__all__"

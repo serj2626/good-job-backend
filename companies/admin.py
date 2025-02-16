@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Comment, Company, Vacancy, CheckCompany
+from .models import CommentCompany, Company, Vacancy, CheckCompany
 
 
 class CheckCompanyInline(admin.TabularInline):
@@ -61,8 +61,8 @@ class VacancyAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
+@admin.register(CommentCompany)
+class CommentCompanyAdmin(admin.ModelAdmin):
     """
     Админка комментарий
     """

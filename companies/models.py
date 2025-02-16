@@ -12,12 +12,18 @@ from common.service import (
     get_path_for_check_company_no_debt,
 )
 from employees.models import Resume
-from common.models import ProfileModel, ResumeOrVacancyModel
+from common.models import (
+    CommentBaseModel,
+    MyBaseModel,
+    ProfileModel,
+    ResumeOrVacancyModel,
+)
 from common.const import (
     COMPANY_TYPES,
     LEVELS_REQUIREMENTS,
     STATUS_CHECK_COMPANY,
     STATUS_VACANCY,
+    FORMAT_WORK,
 )
 from django.utils.timesince import timesince
 
@@ -59,7 +65,7 @@ class Company(ProfileModel):
         return f"{self.get_type_display()} {self.name}"
 
 
-class CheckCompany(models.Model):
+class CheckCompany(MyBaseModel):
     """
     Модель проверки компании.
     """
@@ -96,19 +102,12 @@ class CheckCompany(models.Model):
         "Справка, подтверждающая отсутствие налоговых задолженностей",
         upload_to=get_path_for_check_company_no_debt,
     )
-    consent = models.BooleanField(
-        default=False, verbose_name="Согласие на обработку персональных данных"
-    )
-
     status = models.CharField(
         "Статус проверки",
         max_length=200,
         choices=STATUS_CHECK_COMPANY,
         default="pending",
     )
-
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.consent:
@@ -140,13 +139,12 @@ class Vacancy(ResumeOrVacancyModel):
     status_vacancy = models.CharField(
         "Статус вакансии", max_length=200, choices=STATUS_VACANCY, default="open"
     )
-    work_experience = models.SmallIntegerField("Стаж", blank=True, null=True)
-    requirements = models.TextField(
-        "Требования", max_length=3000, blank=True, null=True
+    format_work = models.CharField(
+        "Формат работы", max_length=200, choices=FORMAT_WORK, default="remote"
     )
+    work_experience = models.SmallIntegerField("Стаж", blank=True, null=True)
     city = models.CharField("Город", max_length=200, blank=True, null=True)
     country = models.CharField("Страна", max_length=200, blank=True, null=True)
-    metro = models.CharField("Станция метро", max_length=200, blank=True, null=True)
     description = models.TextField("Описание", blank=True, null=True)
 
     class Meta:
@@ -157,14 +155,14 @@ class Vacancy(ResumeOrVacancyModel):
         return f"Вакансия от {self.category.name}"
 
 
-class Comment(models.Model):
+class CommentCompany(CommentBaseModel):
     """Модель комментария к компании."""
 
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name="Пользователь",
-        related_name="my_comments",
+        related_name="comments_by_company",
     )
     company = models.ForeignKey(
         Company,
@@ -172,13 +170,9 @@ class Comment(models.Model):
         verbose_name="Компания",
         related_name="all_comments",
     )
-    likes = models.ManyToManyField(User, verbose_name="Лайки", blank=True)
-    text = models.TextField("Сообщение", max_length=3000)
     stars = models.SmallIntegerField(
         "Оценка", validators=[MinValueValidator(1), MaxValueValidator(5)], default=5
     )
-    created_at = models.DateTimeField("Создан", auto_now_add=True)
-    updated_at = models.DateTimeField("Обновлен", auto_now=True)
 
     def time_ago(self):
         return timesince(self.created_at)

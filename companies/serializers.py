@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from accounts.serializers import UserDataSerializer
-from companies.models import Company, Vacancy, Comment
+from companies.models import Company, Vacancy, CommentCompany
 from django.utils.timesince import timesince
 
 
@@ -54,9 +54,9 @@ class VacancyListCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class CommentCompanySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = CommentCompany
         fields = "__all__"
 
 

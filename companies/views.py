@@ -1,10 +1,10 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 
-from .models import Comment, Company, Vacancy
+from .models import CommentCompany, Company, Vacancy
 
 from .serializers import (
-    CommentSerializer,
+    CommentCompanySerializer,
     CompanyDetailSerializer,
     CompanySerializer,
     VacancyListCreateSerializer,
@@ -73,13 +73,13 @@ class CompanyDetailView(generics.RetrieveUpdateDestroyAPIView):
         return super().patch(request, *args, **kwargs)
 
 
-class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
+class CommentCompanyDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CommentCompanySerializer
+    queryset = CommentCompany.objects.all()
 
     @extend_schema(
         tags=["Комментарии"],
-        responses=CommentSerializer,
+        responses=CommentCompanySerializer,
         summary="Получение комментария по id",
     )
     def get(self, request, *args, **kwargs):
@@ -87,8 +87,8 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         tags=["Комментарии"],
-        request=CommentSerializer,
-        responses=CommentSerializer,
+        request=CommentCompanySerializer,
+        responses=CommentCompanySerializer,
         summary="Обновление комментария по id",
     )
     def put(self, request, *args, **kwargs):
@@ -96,8 +96,8 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         tags=["Комментарии"],
-        request=CommentSerializer,
-        responses=CommentSerializer,
+        request=CommentCompanySerializer,
+        responses=CommentCompanySerializer,
         summary="Удаление комментария по id",
     )
     def delete(self, request, *args, **kwargs):
@@ -105,22 +105,22 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         tags=["Комментарии"],
-        request=CommentSerializer,
-        responses=CommentSerializer,
+        request=CommentCompanySerializer,
+        responses=CommentCompanySerializer,
         summary="Частичное обновление комментария по id",
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
 
 
-class CommentListView(generics.ListCreateAPIView):
-    serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
+class CommentCompanyListView(generics.ListCreateAPIView):
+    serializer_class = CommentCompanySerializer
+    queryset = CommentCompany.objects.all()
 
     @extend_schema(
         tags=["Комментарии"],
-        request=CommentSerializer,
-        responses=CommentSerializer,
+        request=CommentCompanySerializer,
+        responses=CommentCompanySerializer,
         summary="Добавление комментария",
     )
     def post(self, request, *args, **kwargs):
@@ -135,7 +135,7 @@ class CommentListView(generics.ListCreateAPIView):
 
     @extend_schema(
         tags=["Комментарии"],
-        responses=CommentSerializer,
+        responses=CommentCompanySerializer,
         summary="Получение всех комментариев",
     )
     def get(self, request, *args, **kwargs):
